@@ -13,6 +13,7 @@
     "test:features": "cross-env NODE_PATH=. NODE_ENV=test mocha -r ts-node/register --config test/.mocharc.features.json -R list",
     "lint": "eslint --no-error-on-unmatched-pattern {src,test,config}/**/*.{ts,js}",
     "lint:fix": "eslint --fix --no-error-on-unmatched-pattern {src,test,config}/**/*.{ts,js}",
+    "coverage": "cross-env NODE_PATH=. NODE_ENV=test nyc mocha -r ts-node/register --config test/.mocharc.unit.json"
   },
   "repository": {
     "type": "git",
@@ -43,6 +44,7 @@
     "dirty-chai": "^2.0.1",
     "eslint": "^7.16.0",
     "mocha": "^8.2.1",
+    "nyc": "^15.1.0",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   }
