@@ -18,6 +18,7 @@
     "test:cicd:coverage": "npm run test:base -- --runner:cicd --scope:coverage",
     "test:base": "cross-env NODE_PATH=. NODE_ENV=test mocha -r ts-node/register --config test/.mocharc.js",
     "lint": "eslint --no-error-on-unmatched-pattern {src,test,config}/**/*.{ts,js}",
+    "lint:cicd": "npm run lint -- -f junit -o buddybuild_artifacts/ESLint/eslint.xml",
     "lint:fix": "npm run lint -- --fix"
   },
   "repository": {

@@ -37,8 +37,22 @@ if (scope == "coverage") {
 // Add junit options if being run by CI/CD
 if (runner == "cicd") {
     baseConfig.reporter = "mocha-junit-reporter";
+    let fileLocation = "INVALID_CLI_ARGS";
+    switch (scope) {
+        case "unit":
+            fileLocation = `buddybuild_artifacts/UnitTest/unit_test.xml`
+            break;
+        case "features":
+            fileLocation = `buddybuild_artifacts/FeatureTest/features_test.xml`
+            break;
+        case "coverage":
+            fileLocation = `buddybuild_artifacts/Coverage/coverage.xml`
+            break;
+        default:
+            break;
+    }
     baseConfig.reporterOptions = {
-        "mochaFile": `./junit_report-${scope}.xml`
+        "mochaFile": fileLocation
     };
 }
 
