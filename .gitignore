@@ -22,6 +22,9 @@ lib-cov
 coverage
 *.lcov
 
+# Junit Reports
+junit_report*
+
 # nyc test coverage
 .nyc_output
 

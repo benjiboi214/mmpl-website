@@ -9,11 +9,16 @@
     "build-ts": "tsc",
     "test": "npm run test:all",
     "test:all": "npm run test:unit && npm run test:features",
-    "test:unit": "cross-env NODE_PATH=. NODE_ENV=test mocha -r ts-node/register --config test/.mocharc.unit.json -R list",
-    "test:features": "cross-env NODE_PATH=. NODE_ENV=test mocha -r ts-node/register --config test/.mocharc.features.json -R list",
+    "test:unit": "npm run test:base -- --runner:local --scope:unit",
+    "test:features": "npm run test:base -- --runner:local --scope:features",
+    "test:coverage": "npm run test:base -- --runner:local --scope:coverage",
+    "test:cicd:all": "npm run test:cicd:unit && npm run test:cicd:features",
+    "test:cicd:unit": "npm run test:base -- --runner:cicd --scope:unit",
+    "test:cicd:features": "npm run test:base -- --runner:cicd --scope:features",
+    "test:cicd:coverage": "npm run test:base -- --runner:cicd --scope:coverage",
+    "test:base": "cross-env NODE_PATH=. NODE_ENV=test mocha -r ts-node/register --config test/.mocharc.js",
     "lint": "eslint --no-error-on-unmatched-pattern {src,test,config}/**/*.{ts,js}",
-    "lint:fix": "eslint --fix --no-error-on-unmatched-pattern {src,test,config}/**/*.{ts,js}",
-    "coverage": "cross-env NODE_PATH=. NODE_ENV=test nyc mocha -r ts-node/register --config test/.mocharc.unit.json"
+    "lint:fix": "npm run lint -- --fix"
   },
   "repository": {
     "type": "git",
@@ -48,6 +53,7 @@
     "dirty-chai": "^2.0.1",
     "eslint": "^7.16.0",
     "mocha": "^8.2.1",
+    "mocha-junit-reporter": "^2.0.0",
     "nyc": "^15.1.0",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"

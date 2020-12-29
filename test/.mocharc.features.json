@@ -1,9 +1,0 @@
-{
-  "recursive": true,
-  "file": [
-    "test/setup.ts"
-  ],
-  "spec": [
-    "test/features/**/*.spec.ts"
-  ]
-}
