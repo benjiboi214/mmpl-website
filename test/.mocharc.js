@@ -32,28 +32,13 @@ if (scope == 'coverage') {
     baseConfig.spec.push(`test/unit/**/*.spec.ts`);
 } else {
     baseConfig.spec.push(`test/${scope}/**/*.spec.ts`);
-}
-
-// Add junit options if being run by CI/CD
-if (runner == 'cicd') {
-    baseConfig.reporter = 'mocha-junit-reporter';
-    let fileLocation = 'INVALID_CLI_ARGS';
-    switch (scope) {
-        case 'unit':
-            fileLocation = 'buddybuild_artifacts/Units/unit_test.xml'
-            break;
-        case 'features':
-            fileLocation = 'buddybuild_artifacts/Features/features_test.xml'
-            break;
-        case 'coverage':
-            fileLocation = 'buddybuild_artifacts/Coverage/coverage.xml'
-            break;
-        default:
-            break;
+    if (runner == 'cicd') {
+        baseConfig.reporterOptions = {
+            'reportFilename': `${scope}_test`,
+            'consoleReporter': 'none'
+        };
+        baseConfig.reporter = 'mochawesome';        
     }
-    baseConfig.reporterOptions = {
-        'mochaFile': fileLocation
-    };
 }
 
 // Export Config
