@@ -2,6 +2,12 @@
   "name": "mmpl-do",
   "version": "0.1.0",
   "description": "MMPL Website, now in NODE!",
+  "scripts": {
+    "serve:build": "npm run build && npm run serve",
+    "serve": "node dist/server.js",
+    "build": "npm run build-ts",
+    "build-ts": "tsc",
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/benjiboi214/mmpl-do.git"
