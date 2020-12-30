@@ -3,6 +3,9 @@ kind: Deployment
 metadata:
   name: mmpl-do
 spec:
+  selector:
+      matchLabels:
+        app: mmpl-do
   replicas: 2
   template:
     metadata:
