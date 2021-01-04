@@ -1,19 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mmpl-do
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 3000
+  selector:
+    app: mmpl-do
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mmpl-do
 spec:
   selector:
-      matchLabels:
-        app: mmpl-do
+    matchLabels:
+      app: mmpl-do
   replicas: 2
   template:
     metadata:
       labels: # labels to select/identify the deployment
         app: mmpl-do
-    spec:     # pod spec                  
-      containers: 
-      - name: mmpl-do
-        image: benjiboi214/mmpl-do:cicd_test # image we pushed
-        ports:
-        - containerPort: 3000
+    spec: # pod spec
+      containers:
+        - name: mmpl-do
+          image: benjiboi214/mmpl-do:cicd_test # image we pushed
+          ports:
+            - containerPort: 3000
