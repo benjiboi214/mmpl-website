@@ -19,7 +19,6 @@ import path from 'path';
 // import * as apiController from "./controllers/api";
 // import * as contactController from "./controllers/contact";
 
-
 // API keys and Passport configuration
 // import * as passportConfig from "./config/passport";
 
@@ -78,15 +77,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // });
 
 app.use(
-    express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 })
+  express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 })
 );
 
 /**
  * Primary app routes.
  */
 app.get('*', function (req, res) {
-    res.send('Hello World!');
-  });
+  console.log('Recieved Request');
+  res.send('Hello World!');
+});
 // app.get("/", homeController.index);
 // app.get("/login", userController.getLogin);
 // app.post("/login", userController.postLogin);
