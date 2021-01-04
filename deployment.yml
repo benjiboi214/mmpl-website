@@ -41,6 +41,7 @@ spec:
     - http:
         paths:
           - path: /cicd-test
+            pathType: Prefix
             backend:
               service:
                 name: mmpl-do
