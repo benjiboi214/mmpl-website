@@ -42,5 +42,6 @@ spec:
         paths:
           - path: /cicd-test
             backend:
-              serviceName: mmpl-do
-              servicePort: 80
+              service:
+                name: mmpl-do
+                port: 80
