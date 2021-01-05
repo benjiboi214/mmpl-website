@@ -39,9 +39,10 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-    - http:
+    - host: "test.mmpl.bennyda.ninja"
+      http:
         paths:
-          - path: /cicd-test
+          - path: /
             pathType: Prefix
             backend:
               service:
