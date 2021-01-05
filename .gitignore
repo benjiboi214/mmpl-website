@@ -109,3 +109,6 @@ dist
 
 # OSX Index
 .DS_Store
+
+# HTML Template
+html-template/
