@@ -17,12 +17,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: mmpl-do
+      app: mmpl-do-web-template
   replicas: 2
   template:
     metadata:
       labels: # labels to select/identify the deployment
-        app: mmpl-do-deployment
+        app: mmpl-do-web-template
     spec: # pod spec
       containers:
         - name: mmpl-do-web
