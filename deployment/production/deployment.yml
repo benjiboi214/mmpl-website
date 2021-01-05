@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mmpl-do-deployment-prod
+spec:
+  selector:
+    matchLabels:
+      app: mmpl-do-web-template-prod
+  replicas: 2
+  template:
+    metadata:
+      labels: # labels to select/identify the deployment
+        app: mmpl-do-web-template-prod
+    spec: # pod spec
+      containers:
+        - name: mmpl-do-web
+          image: benjiboi214/mmpl-do:cicd_test # image we pushed
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000

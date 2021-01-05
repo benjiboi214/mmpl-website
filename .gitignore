@@ -22,6 +22,9 @@ lib-cov
 coverage
 *.lcov
 
+# HTML Test Reports
+TestReports
+
 # nyc test coverage
 .nyc_output
 
@@ -103,3 +106,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# OSX Index
+.DS_Store
