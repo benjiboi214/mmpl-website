@@ -3,7 +3,10 @@
 - Clean up .mocharc after everything is now in HTML
 
 # Buddy
-- Move cicd_test pipeline to develop/master/tag 
+- Build new test only pipeline for PRs
+- Move cicd_test to master (test / staging branch)
+- Build production env in k8s
+- Configure production pipeline for git tags
 
 # Website
 - Upgrade Fontawesome to v5
