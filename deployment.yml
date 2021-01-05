@@ -22,7 +22,7 @@ spec:
   template:
     metadata:
       labels: # labels to select/identify the deployment
-        app: mmpl-do-template
+        app: mmpl-do-deployment
     spec: # pod spec
       containers:
         - name: mmpl-do-web
