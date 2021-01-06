@@ -2,6 +2,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 
+import { router } from './routes';
+
 // Create Express server
 const app = express();
 
@@ -18,11 +20,6 @@ app.use(
 );
 
 // Primary Routes
-app.get('/', (req: express.Request, res: express.Response): void => {
-  res.render('home', {
-      headerTitle: 'Title',
-      header: 'Header'
-  });
-});
+app.use('', router);
 
 export default app;
