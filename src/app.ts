@@ -83,11 +83,16 @@ app.use(
 /**
  * Primary app routes.
  */
-app.get('*', function (req, res) {
-  console.log('Recieved Request');
-  res.send('Hello World!');
+
+app.get('/', (req: express.Request, res: express.Response): void => {
+  res.render('home', {
+      headerTitle: 'Title',
+      header: 'Header'
+  });
 });
-// app.get("/", homeController.index);
+// app.get('*', function (req, res) {
+//   console.log('Recieved Request');
+// });
 // app.get("/login", userController.getLogin);
 // app.post("/login", userController.postLogin);
 // app.get("/logout", userController.logout);
