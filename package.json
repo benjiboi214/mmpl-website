@@ -9,7 +9,7 @@
     "serve:debug": "DEBUG=express:* node dist/server.js",
     "build": "npm run build-ts",
     "build-ts": "tsc",
-    "build:copy-static": "rm -r dist/public && cp -R src/public dist/",
+    "build:copy-static": "rm -r dist/public && cp -R public dist/",
     "test": "npm run test:all",
     "test:all": "npm run test:unit && npm run test:features && npm run test:coverage && npm run test:lint",
     "test:unit": "npm run test:base -- --runner:local --scope:unit",
