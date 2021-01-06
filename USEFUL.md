@@ -7,3 +7,7 @@ Collection of useful things found while working on this
 - [K8s Ingress Docs](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 - [Installing CertManager to K8s](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nginx-ingress-with-cert-manager-on-digitalocean-kubernetes)
 - [CertManager Config Docs](https://cert-manager.io/docs/configuration/acme/)
+
+# Website Templating
+- Regex for changing tags to brackets
+  `<(\w*)\s([\w\s=\d"-/]*)>`
