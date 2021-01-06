@@ -5,44 +5,44 @@ html(class='no-js')
 
     <!-- Basic Page Meta ================ -->
     block base_meta
-      include partials/base/meta
+      include ../partials/base/meta
 
     <!-- Mobile Specific Metas ================ -->
     block base_mobile_meta
-      include partials/base/mobile_meta
+      include ../partials/base/mobile_meta
 
     <!-- CSS ================ -->
     block base_css
-      include partials/base/css
+      include ../partials/base/css
 
     <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
     block base_slider_revolution
-      include partials/base/slider_revolution
+      include ../partials/base/slider_revolution
 
     <!-- GOOGLE FONTS FOR REVOLUTION SLIDER ONLY -->
     block base_google_fonts
-      include partials/base/google_fonts
+      include ../partials/base/google_fonts
 
     <!-- SCRIPTS ================ -->
     block base_header_js
-      include partials/base/header_js
+      include ../partials/base/header_js
 
   body(class='header-style1')
     
-    include partials/ie_upgrade_warning
+    include ../partials/ie_upgrade_warning
 
     div(class='body')
 
-      include partials/header
+      include ../partials/header
 
       block hero
-        include partials/hero
+        include ../partials/hero
 
-      block content
+      block main
 
       block footer
-        include partials/footer
+        include ../partials/footer
 
       <!-- POST LOAD SCRIPTS ================ -->
       block base_footer_js
-        include partials/base/footer_js
+        include ../partials/base/footer_js
