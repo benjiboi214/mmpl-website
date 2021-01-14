@@ -1,10 +1,19 @@
-extends layouts/content_sidebar
+extends layouts/content_no_sidebar
 
 block breadcrumb
   include partials/breadcrumb
 
 block content
-  h1 Documents
-
-block sidebar
-  h2 Sidebar
+  div(class="row")
+    ul(class="isotope-grid isotope artworks-grid" data-sort-id="grid")
+      each document in documents
+        li(class="col-md-4 col-sm-6 grid-item")
+          div(class="format-standard")
+            a(href=`${document.fullPath}` class="media-box grid-featured-img")
+              img(src=`${document.imageRef[0]}` alt="artwork6")
+            div(class="grid-item-content")
+              h3(class="short")
+                a(href=`${document.fullPath}`) #{document.label}
+              p #{document.description}
+              div(class="spacer-10")
+              a(href=`${document.fullPath}` class="pull-right basic-link") Read more
