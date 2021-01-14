@@ -5,13 +5,15 @@ type DocumentPdfHref = string;
 type DocumentDescription = string;
 type DocumentSubtitle = string;
 type DocumentSubDescription = string[];
+type DocumentFullPath = string;
 
 interface DocumentProps extends GenericProps {
-  imageRef: DocumentImageHref;
+  imageRef: DocumentImageHref[];
   pdfRef: DocumentPdfHref;
   description: DocumentDescription;
   subtitle: DocumentSubtitle;
   subDescription: DocumentSubDescription;
+  fullPath?: DocumentFullPath;
 }
 
 type DocumentDirectory = {
