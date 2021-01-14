@@ -7,6 +7,7 @@ import './controllers/historyController';
 import './controllers/winterHistoryController';
 import './controllers/summerHistoryController';
 import './controllers/aboutController';
+import './controllers/associationController';
 import './controllers/joinController';
 
 const v1Router = SiteTree.getExpressRouter();

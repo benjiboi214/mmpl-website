@@ -14,7 +14,7 @@ export const documentControllerFactory = (config: PageProps) => {
   
     console.log(documents);
   
-    res.render(config.reference, {
+    res.render('documents', {
       metaTitle: config.label,
       breadcrumbs: SiteTree.getBreadcrumbs(config.reference),
       documents: documents

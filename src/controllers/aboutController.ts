@@ -42,26 +42,6 @@ const committeeConfig = {
 };
 SiteTree.registerPage(committeeConfig);
 
-// Constitution Page
-const constitution = (req: Request, res: Response): void => {
-  res.render(constitutionConfig.reference, {
-    metaTitle: constitutionConfig.label,
-    breadcrumbs: SiteTree.getBreadcrumbs(constitutionConfig.reference)
-  });
-};
-const constitutionConfig = {
-  reference: 'constitution',
-  label: 'Constitution',
-  href: 'constitution/',
-  parent: 'about',
-  menuSettings: {
-    header: true,
-    footer: false
-  },
-  pageController: constitution
-};
-SiteTree.registerPage(constitutionConfig);
-
 // World Rules Page
 const world_rules = (req: Request, res: Response): void => {
   res.render(worldRulesConfig.reference, {
