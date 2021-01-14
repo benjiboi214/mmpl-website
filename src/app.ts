@@ -2,7 +2,10 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 
+import { SiteTree } from './utils/siteTree';
 import { router } from './routes';
+import meta from './content/meta';
+import socials from './content/socials';
 
 // Create Express server
 const app = express();
@@ -18,6 +21,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   express.static(path.join(__dirname, '../public'), { maxAge: 31557600000 })
 );
+app.use(function (req, res, next) {
+  res.locals.headerMenu = SiteTree.getHeaderMenu();
+  res.locals.footerMenu = SiteTree.getFooterMenu();
+  res.locals.content = {
+    meta,
+    socials,
+  };
+  next();
+});
 
 // Primary Routes
 app.use('', router);
