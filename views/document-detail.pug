@@ -15,16 +15,9 @@ block content
           ul(class="angles")
             for item in document.subDescription
               li #{item}
+      
+      br
 
-    div(class="col-md-6 col-sm-6")
-      div(class="flexslider galleryflex" data-pagination="yes" data-autoplay="yes")
-        ul(class="slides")
-          li(class="slide")
-            img(src=`${document.imageRef}` alt="")
-    br
-  div(class="row")
-    div(class="col-md-6 col-sm-6")
-      //- <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Enquiry form</a>
       if document.pdfRef
         a(href=`${document.pdfRef}` class="btn btn-default" download=`${document.pdfRef}`)
           i(class="fa fa-file-pdf-o")
@@ -34,3 +27,9 @@ block content
         a(href=`${document.imageRef}` class="btn btn-default" download=`${document.imageRef}`)
           i(class="fa fa-file-image-o")
           |  Download as PNG
+
+    div(class="col-md-6 col-sm-6")
+      div(class="flexslider galleryflex" data-pagination="yes" data-autoplay="yes")
+        ul(class="slides")
+          li(class="slide")
+            img(src=`${document.imageRef}` alt="")
