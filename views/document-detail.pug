@@ -22,14 +22,25 @@ block content
         a(href=`${document.pdfRef}` class="btn btn-default" download=`${document.pdfRef}`)
           i(class="fa fa-file-pdf-o")
           |  Download as PDF
-      | 
-      if document.imageRef
-        a(href=`${document.imageRef}` class="btn btn-default" download=`${document.imageRef}`)
-          i(class="fa fa-file-image-o")
-          |  Download as PNG
+      br
+      br
 
-    div(class="col-md-6 col-sm-6")
-      div(class="flexslider galleryflex" data-pagination="yes" data-autoplay="yes")
-        ul(class="slides")
-          li(class="slide")
-            img(src=`${document.imageRef}` alt="")
+      if document.imageRef
+        each image, index in document.imageRef
+          a(href=`${image}` class="btn btn-default" download=`${image}`)
+            i(class="fa fa-file-image-o")
+            if document.imageRef.length == 1
+              |  Download as PNG
+            else
+              |  Download #{index + 1} of #{document.imageRef.length} as PNG
+          br
+          br
+          | 
+
+    if document.imageRef
+      div(class="col-md-6 col-sm-6")
+        div(class="flexslider galleryflex" data-pagination="yes" data-autoplay="yes")
+          ul(class="slides")
+            for image in document.imageRef
+              li(class="slide")
+                img(src=`${image}` alt="")
