@@ -1,11 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { GenericProps, GenericReference, GenericLabel } from './genericTypes';
+
 export interface SiteTreeProps {
   expressRouter: Router;
   rootLabel: string;
 }
 
-type PageReference = string;
-type PageLabel = string;
 type PageHref = string;
 type ExternalHref = PageHref;
 type BreadcrumbActive = boolean;
@@ -13,15 +13,13 @@ type MenuToggle = boolean;
 type MenuSettings = {
   [key: string]: MenuToggle;
 };
-type PageController = (req: Request, res: Response) => void
+type PageController = (req: Request, res: Response) => void;
 
-interface PageProps {
-  reference: PageReference;
-  label: PageLabel;
+interface PageProps extends GenericProps {
   href?: PageHref;
   externalHref?: ExternalHref;
-  children?: PageReference[];
-  parent?: PageReference;
+  children?: GenericReference[];
+  parent?: GenericReference;
   menuSettings?: MenuSettings;
   pageController?: PageController;
 }
@@ -31,13 +29,13 @@ type PageDirectory = {
 };
 
 type BreadcrumbViewModel = {
-  label: PageLabel;
+  label: GenericLabel;
   href: PageHref | false;
   active: BreadcrumbActive;
 };
 
 type MenuViewModel = {
-  label: PageLabel;
+  label: GenericLabel;
   href: PageHref;
   children?: MenuViewModel[];
 };
@@ -48,7 +46,6 @@ export class SiteTree {
 
   private static rootPage: PageProps;
   private static pageDir: PageDirectory = {};
-
 
   static registerPage(props: PageProps): void {
     SiteTree.pageDir[props.reference] = props;
@@ -65,10 +62,9 @@ export class SiteTree {
         ? null
         : parent.children.push(props.reference);
     }
-    console.log(this.pageDir);
   }
 
-  static getPage(reference: PageReference): PageProps {
+  static getPage(reference: GenericReference): PageProps {
     return SiteTree.pageDir[reference];
   }
 
@@ -76,14 +72,14 @@ export class SiteTree {
     return this.getPage(SiteTree.rootPage.reference);
   }
 
-  private static  buildPath(
+  private static buildPath(
     accummulator: PageHref,
-    reference: PageReference
+    reference: GenericReference
   ): PageHref {
     const { href, externalHref, parent } = this.getPage(reference);
-    if ( externalHref ) {
+    if (externalHref) {
       return externalHref;
-    } else if ( href ) {
+    } else if (href) {
       const builtPath: PageHref = href.concat(accummulator);
       if (parent === SiteTree.rootLabel) {
         return builtPath;
@@ -95,13 +91,13 @@ export class SiteTree {
     }
   }
 
-  static getURLPath(reference: PageReference): PageHref {
+  static getURLPath(reference: GenericReference): PageHref {
     return this.buildPath('', reference);
   }
 
-  private static  buildBreadcrumb(
+  private static buildBreadcrumb(
     accumulator: BreadcrumbViewModel[],
-    reference: PageReference,
+    reference: GenericReference,
     first: boolean
   ): BreadcrumbViewModel[] {
     // Get the object being referenced
@@ -123,7 +119,7 @@ export class SiteTree {
     }
   }
 
-  static getBreadcrumbs(reference: PageReference): BreadcrumbViewModel[] {
+  static getBreadcrumbs(reference: GenericReference): BreadcrumbViewModel[] {
     const breadcrumbs: BreadcrumbViewModel[] = [];
     return this.buildBreadcrumb(breadcrumbs, reference, true);
   }
@@ -131,7 +127,7 @@ export class SiteTree {
   private static buildMenuChildren(
     targetMenu: string,
     targetArray: MenuViewModel[],
-    childReferences: PageReference[]
+    childReferences: GenericReference[]
   ): MenuViewModel[] {
     childReferences.forEach((reference) => {
       const child = this.getPage(reference);
@@ -157,7 +153,7 @@ export class SiteTree {
             viewModel.children = childrenArray;
           }
         }
-        
+
         targetArray.push(viewModel);
       }
     });
@@ -182,7 +178,10 @@ export class SiteTree {
     return this.buildBaseMenu('footer');
   }
 
-  private static buildRoutes(router: Router, childReferences: PageReference[]): void {
+  private static buildRoutes(
+    router: Router,
+    childReferences: GenericReference[]
+  ): void {
     childReferences.forEach((reference) => {
       const child = this.getPage(reference);
       if (child.pageController) {

@@ -1,0 +1,36 @@
+extends layouts/content_no_sidebar
+
+block breadcrumb
+  include partials/breadcrumb
+
+block content
+  div(class="row")
+    div(class="col-md-6 col-sm-6")
+      h1 #{document.label}
+      p #{document.description}
+      
+      if document.subtitle
+        h2 #{document.subtitle}
+        if document.subDescription
+          ul(class="angles")
+            for item in document.subDescription
+              li #{item}
+
+    div(class="col-md-6 col-sm-6")
+      div(class="flexslider galleryflex" data-pagination="yes" data-autoplay="yes")
+        ul(class="slides")
+          li(class="slide")
+            img(src=`${document.imageRef}` alt="")
+    br
+  div(class="row")
+    div(class="col-md-6 col-sm-6")
+      //- <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Enquiry form</a>
+      if document.pdfRef
+        a(href=`${document.pdfRef}` class="btn btn-default" download=`${document.pdfRef}`)
+          i(class="fa fa-file-pdf-o")
+          |  Download as PDF
+      | 
+      if document.imageRef
+        a(href=`${document.imageRef}` class="btn btn-default" download=`${document.imageRef}`)
+          i(class="fa fa-file-image-o")
+          |  Download as PNG
