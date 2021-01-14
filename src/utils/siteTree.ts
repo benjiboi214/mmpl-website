@@ -15,7 +15,7 @@ type MenuSettings = {
 };
 type PageController = (req: Request, res: Response) => void;
 
-interface PageProps extends GenericProps {
+export interface PageProps extends GenericProps {
   href?: PageHref;
   externalHref?: ExternalHref;
   children?: GenericReference[];
