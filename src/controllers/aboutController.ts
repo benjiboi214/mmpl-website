@@ -5,7 +5,7 @@ import { SiteTree } from '../utils/siteTree';
 // About Page
 const about = (req: Request, res: Response): void => {
   res.render(aboutConfig.reference, {
-    metaTitle: 'About',
+    metaTitle: aboutConfig.label,
     breadcrumbs: SiteTree.getBreadcrumbs(aboutConfig.reference)
   });
 };
@@ -25,7 +25,7 @@ SiteTree.registerPage(aboutConfig);
 // Comittee Page
 const committee = (req: Request, res: Response): void => {
   res.render(committeeConfig.reference, {
-    metaTitle: 'Committee',
+    metaTitle: committeeConfig.label,
     breadcrumbs: SiteTree.getBreadcrumbs(committeeConfig.reference)
   });
 };
@@ -42,10 +42,70 @@ const committeeConfig = {
 };
 SiteTree.registerPage(committeeConfig);
 
+// Constitution Page
+const constitution = (req: Request, res: Response): void => {
+  res.render(constitutionConfig.reference, {
+    metaTitle: constitutionConfig.label,
+    breadcrumbs: SiteTree.getBreadcrumbs(constitutionConfig.reference)
+  });
+};
+const constitutionConfig = {
+  reference: 'constitution',
+  label: 'Constitution',
+  href: 'constitution/',
+  parent: 'about',
+  menuSettings: {
+    header: true,
+    footer: false
+  },
+  pageController: constitution
+};
+SiteTree.registerPage(constitutionConfig);
+
+// World Rules Page
+const world_rules = (req: Request, res: Response): void => {
+  res.render(worldRulesConfig.reference, {
+    metaTitle: worldRulesConfig.label,
+    breadcrumbs: SiteTree.getBreadcrumbs(worldRulesConfig.reference)
+  });
+};
+const worldRulesConfig = {
+  reference: 'world-rules',
+  label: 'World Rules',
+  href: 'world-rules/',
+  parent: 'about',
+  menuSettings: {
+    header: true,
+    footer: false
+  },
+  pageController: world_rules
+};
+SiteTree.registerPage(worldRulesConfig);
+
+// Venues List Page
+const venues = (req: Request, res: Response): void => {
+  res.render(venuesConfig.reference, {
+    metaTitle: venuesConfig.label,
+    breadcrumbs: SiteTree.getBreadcrumbs(venuesConfig.reference)
+  });
+};
+const venuesConfig = {
+  reference: 'venues',
+  label: 'Venues',
+  href: 'venues/',
+  parent: 'about',
+  menuSettings: {
+    header: true,
+    footer: false
+  },
+  pageController: venues
+};
+SiteTree.registerPage(venuesConfig);
+
 // Honour Roll Page
 const honourRoll = (req: Request, res: Response): void => {
   res.render(honourRollConfig.reference, {
-    metaTitle: 'Honour Roll',
+    metaTitle: honourRollConfig.label,
     breadcrumbs: SiteTree.getBreadcrumbs(honourRollConfig.reference)
   });
 };
