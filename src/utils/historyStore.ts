@@ -1,6 +1,9 @@
 import { GenericProps, GenericReference } from './genericTypes';
 
 type HistoryDescription = string;
+type HistoryFullPath = string;
+type HistoryFaIcon = string;
+
 
 type HistorySeason = number | string;
 type HistoryChampions = string;
@@ -10,6 +13,7 @@ type HistoryMvpTeam = string;
 type HistoryMvpPlayed = number | string;
 type HistoryMvpWon = number | string;
 type HistoryMvpLost = number | string;
+
 
 type HistoryTableEntry = {
   season: HistorySeason,
@@ -24,6 +28,8 @@ type HistoryTableEntry = {
 
 interface HistoryProps extends GenericProps {
   description: HistoryDescription;
+  fullPath?: HistoryFullPath;
+  icon: HistoryFaIcon;
   history: HistoryTableEntry[];
 }
 
