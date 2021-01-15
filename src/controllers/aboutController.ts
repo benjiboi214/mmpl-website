@@ -2,11 +2,15 @@ import { Request, Response } from 'express';
 
 import { SiteTree } from '../utils/siteTree';
 
+import aboutContent from '../content/about';
+
 // About Page
 const about = (req: Request, res: Response): void => {
   res.render(aboutConfig.reference, {
     metaTitle: aboutConfig.label,
-    breadcrumbs: SiteTree.getBreadcrumbs(aboutConfig.reference)
+    breadcrumbs: SiteTree.getBreadcrumbs(aboutConfig.reference),
+    about: aboutContent,
+    sideBar: SiteTree.getDirectChildrenLinks(aboutConfig.reference)
   });
 };
 const aboutConfig = {

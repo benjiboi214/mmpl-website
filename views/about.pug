@@ -4,7 +4,17 @@ block breadcrumb
   include partials/breadcrumb
 
 block content
-  h1 About
+  h4(class="short accent-color") #{about.greenText}
+  h2 #{about.mission}
+  p #{about.missionText}
+  hr
+  h3 #{about.next}
+  p !{about.nextText}
 
 block sidebar
-  h2 Sidebar
+  div(class="widget sidebar-widget widget_categories box-style1")
+    h3(class="widget-title") Quicklinks
+    ul
+      each link in sideBar
+        li
+          a(href=`${link.href}`) #{link.label}
