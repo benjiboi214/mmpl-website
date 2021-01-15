@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { SiteTree, PageProps } from './siteTree';
 import { DocumentStore } from './contentStore';
+import { HistoryStore } from './historyStore';
+
 
 export const documentControllerFactory = (config: PageProps) => {
   return (req: Request, res: Response): void => {
@@ -37,4 +39,29 @@ const documentDetail = (req: Request, res: Response): void => {
 export const baseDocumentDetailConfig = {
   parent: 'documents',
   pageController: documentDetail
+};
+
+const championDetail = (req: Request, res: Response): void => {
+  const pathArray = req.route.path.split('/');
+  const reference = pathArray[pathArray.length - 2];
+  const pageParams = SiteTree.getPage(reference);
+
+  const historyHeaders = ['Season', 'Champions', 'Runners Up', 'MVP', 'MVP Team', 'Played', 'Lost', 'Won'];
+
+  res.render('history-detail', {
+    metaTitle: pageParams.label,
+    breadcrumbs: SiteTree.getBreadcrumbs(reference),
+    document: HistoryStore.getContent(reference),
+    headers: historyHeaders
+  });
+};
+
+export const baseWinterChampionDetailConfig = {
+  parent: 'winter-champions',
+  pageController: championDetail
+};
+
+export const baseSummerChampionDetailConfig = {
+  parent: 'summer-champions',
+  pageController: championDetail
 };
