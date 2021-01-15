@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
-import { SiteTree } from '../utils/siteTree';
+import { SiteTree, PageProps } from '../utils/siteTree';
 import { HistoryStore } from '../utils/historyStore';
-import { baseWinterChampionDetailConfig, baseSummerChampionDetailConfig } from '../utils/factories';
+import { baseWinterChampionDetailConfig, baseSummerChampionDetailConfig, historyControllerFactory } from '../utils/factories';
 
 import { winterHistory, summerHistory } from '../content/history';
 
@@ -27,13 +27,7 @@ const historyConfig = {
 SiteTree.registerPage(historyConfig);
 
 // Winter Champs
-const winterChampions = (req: Request, res: Response): void => {
-  res.render(winterChampConfig.reference, {
-    metaTitle: winterChampConfig.label,
-    breadcrumbs: SiteTree.getBreadcrumbs(winterChampConfig.reference)
-  });
-};
-const winterChampConfig = {
+const winterChampConfig: PageProps = {
   reference: 'winter-champions',
   label: 'Winter Champions',
   href: 'winter-champions/',
@@ -42,8 +36,9 @@ const winterChampConfig = {
     header: true,
     footer: false
   },
-  pageController: winterChampions
+  pageController: null
 };
+winterChampConfig.pageController = historyControllerFactory(winterChampConfig);
 SiteTree.registerPage(winterChampConfig);
 
 winterHistory.forEach(history => {
@@ -52,13 +47,7 @@ winterHistory.forEach(history => {
 });
 
 //Summer Champions
-const summerChampions = (req: Request, res: Response): void => {
-  res.render(summerChampConfig.reference, {
-    metaTitle: summerChampConfig.label,
-    breadcrumbs: SiteTree.getBreadcrumbs(summerChampConfig.reference)
-  });
-};
-const summerChampConfig = {
+const summerChampConfig: PageProps = {
   reference: 'summer-champions',
   label: 'Summer Champions',
   href: 'summer-champions/',
@@ -67,8 +56,9 @@ const summerChampConfig = {
     header: true,
     footer: false
   },
-  pageController: summerChampions
+  pageController: null
 };
+summerChampConfig.pageController = historyControllerFactory(summerChampConfig);
 SiteTree.registerPage(summerChampConfig);
 
 summerHistory.forEach(history => {

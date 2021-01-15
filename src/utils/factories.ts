@@ -65,3 +65,30 @@ export const baseSummerChampionDetailConfig = {
   parent: 'summer-champions',
   pageController: championDetail
 };
+
+const chunk = function<T>(chunkSize: number, array: Array<T>): Array<Array<T>>  {
+  const R = [];
+  for (let i = 0; i < array.length; i += chunkSize)
+    R.push(array.slice(i, i + chunkSize));
+  return R;
+};
+
+export const historyControllerFactory = (config: PageProps) => {
+  return (req: Request, res: Response): void => {
+    const pageParams = SiteTree.getPage(config.reference);
+    const children = pageParams.children;
+    const documents = children.map(reference => {
+      const document = HistoryStore.getContent(reference);
+      document.fullPath = SiteTree.getURLPath(reference);
+      return document;
+    });
+
+    const splitArray = chunk(2, documents);
+
+    res.render('champions', {
+      metaTitle: config.label,
+      breadcrumbs: SiteTree.getBreadcrumbs(config.reference),
+      documents: splitArray
+    });
+  };
+};
