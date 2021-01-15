@@ -11,8 +11,8 @@ interface DocumentProps extends GenericProps {
   imageRef: DocumentImageHref[];
   pdfRef: DocumentPdfHref;
   description: DocumentDescription;
-  subtitle: DocumentSubtitle;
-  subDescription: DocumentSubDescription;
+  subtitle?: DocumentSubtitle;
+  subDescription?: DocumentSubDescription;
   fullPath?: DocumentFullPath;
 }
 
