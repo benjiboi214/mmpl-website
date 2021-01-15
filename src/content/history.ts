@@ -3,6 +3,7 @@ export const winterHistory = [
     reference: 'winter-premier',
     href: 'winter-premier/',
     label: 'Premier',
+    icon: 'fa-battery-full',
     menuSettings: {
       header: true,
       footer: false
@@ -376,6 +377,7 @@ export const winterHistory = [
     reference: 'winter-div-1',
     href: 'winter-div-1/',
     label: 'Division 1',
+    icon: 'fa-battery-three-quarters',
     menuSettings: {
       header: true,
       footer: false
@@ -589,6 +591,7 @@ export const winterHistory = [
     reference: 'winter-div-2',
     href: 'winter-div-2/',
     label: 'Division 2',
+    icon: 'fa-battery-half',
     menuSettings: {
       header: true,
       footer: false
@@ -792,6 +795,7 @@ export const winterHistory = [
     reference: 'winter-div-3',
     href: 'winter-div-3/',
     label: 'Division 3',
+    icon: 'fa-battery-quarter',
     menuSettings: {
       header: true,
       footer: false
@@ -918,6 +922,7 @@ export const summerHistory = [
     reference: 'summer-premier',
     href: 'summer-premier/',
     label: 'Premier',
+    icon: 'fa-battery-full',
     menuSettings: {
       header: true,
       footer: false
@@ -1111,6 +1116,7 @@ export const summerHistory = [
     reference: 'summer-div-1',
     href: 'summer-div-1/',
     label: 'Division 1',
+    icon: 'fa-battery-three-quarters',
     menuSettings: {
       header: true,
       footer: false
@@ -1314,6 +1320,7 @@ export const summerHistory = [
     reference: 'summer-div-2',
     href: 'summer-div-2/',
     label: 'Division 2',
+    icon: 'fa-battery-half',
     menuSettings: {
       header: true,
       footer: false
