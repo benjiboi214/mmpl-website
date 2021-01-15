@@ -17,12 +17,11 @@ const documentsConfig: PageProps = {
   },
   pageController: null
 };
-documentsConfig.pageController = documentControllerFactory(documentsConfig);
+documentsConfig.pageController = documentControllerFactory(documentsConfig, 'documents');
 SiteTree.registerPage(documentsConfig);
 
 // Register Documents
 documents.forEach(document => {
-  console.log(document);
   SiteTree.registerPage(Object.assign({}, baseDocumentDetailConfig, document));
   DocumentStore.registerContent(document);
 });

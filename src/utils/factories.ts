@@ -4,7 +4,7 @@ import { DocumentStore } from './contentStore';
 import { HistoryStore } from './historyStore';
 
 
-export const documentControllerFactory = (config: PageProps) => {
+export const documentControllerFactory = (config: PageProps, viewName: string) => {
   return (req: Request, res: Response): void => {
     const pageParams = SiteTree.getPage(config.reference);
     const children = pageParams.children;
@@ -13,10 +13,10 @@ export const documentControllerFactory = (config: PageProps) => {
       document.fullPath = SiteTree.getURLPath(reference);
       return document;
     });
-  
+
     console.log(documents);
-  
-    res.render('documents', {
+    
+    res.render(viewName, {
       metaTitle: config.label,
       breadcrumbs: SiteTree.getBreadcrumbs(config.reference),
       documents: documents

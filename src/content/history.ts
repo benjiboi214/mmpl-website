@@ -1,3 +1,20 @@
+export const historyDir = [
+  {
+    reference: 'winter-champions',
+    label: 'Winter Champions',
+    href: 'winter-champions/',
+    parent: 'history',
+    imageRef: ['media/mmpl-winter-splash.jpg']
+  },
+  {
+    reference: 'summer-champions',
+    label: 'Summer Champions',
+    href: 'summer-champions/',
+    parent: 'history',
+    imageRef: ['media/mmpl-summer-splash.jpg']
+  },
+];
+
 export const winterHistory = [
   {
     reference: 'winter-premier',

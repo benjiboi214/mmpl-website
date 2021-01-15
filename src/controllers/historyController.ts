@@ -1,19 +1,12 @@
-import { Request, Response } from 'express';
-
 import { SiteTree, PageProps } from '../utils/siteTree';
+import { DocumentStore } from '../utils/contentStore';
 import { HistoryStore } from '../utils/historyStore';
-import { baseWinterChampionDetailConfig, baseSummerChampionDetailConfig, historyControllerFactory } from '../utils/factories';
+import { baseWinterChampionDetailConfig, baseSummerChampionDetailConfig, historyControllerFactory, documentControllerFactory } from '../utils/factories';
 
-import { winterHistory, summerHistory } from '../content/history';
+import { winterHistory, summerHistory, historyDir } from '../content/history';
 
 // History Page
-const history = (req: Request, res: Response): void => {
-  res.render(historyConfig.reference, {
-    metaTitle: 'History',
-    breadcrumbs: SiteTree.getBreadcrumbs(historyConfig.reference)
-  });
-};
-const historyConfig = {
+const historyConfig: PageProps = {
   reference: 'history',
   label: 'History',
   href: 'history/',
@@ -22,9 +15,13 @@ const historyConfig = {
     header: true,
     footer: true
   },
-  pageController: history
+  pageController: null
 };
+historyConfig.pageController = documentControllerFactory(historyConfig, 'history');
 SiteTree.registerPage(historyConfig);
+historyDir.forEach(document => {
+  DocumentStore.registerContent(document);
+});
 
 // Winter Champs
 const winterChampConfig: PageProps = {

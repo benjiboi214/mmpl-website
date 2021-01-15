@@ -9,8 +9,8 @@ type DocumentFullPath = string;
 
 interface DocumentProps extends GenericProps {
   imageRef: DocumentImageHref[];
-  pdfRef: DocumentPdfHref;
-  description: DocumentDescription;
+  pdfRef?: DocumentPdfHref;
+  description?: DocumentDescription;
   subtitle?: DocumentSubtitle;
   subDescription?: DocumentSubDescription;
   fullPath?: DocumentFullPath;

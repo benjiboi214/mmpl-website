@@ -16,7 +16,7 @@ const documentsConfig: PageProps = {
   },
   pageController: null
 };
-documentsConfig.pageController = documentControllerFactory(documentsConfig);
+documentsConfig.pageController = documentControllerFactory(documentsConfig, 'documents');
 SiteTree.registerPage(documentsConfig);
 
 // Register Documents
