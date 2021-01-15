@@ -21,7 +21,6 @@ SiteTree.registerPage(documentsConfig);
 
 // Register Documents
 associationDocs.forEach(document => {
-  console.log(document);
   SiteTree.registerPage(Object.assign({}, baseDocumentDetailConfig, document));
   DocumentStore.registerContent(document);
 });

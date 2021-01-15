@@ -13,8 +13,6 @@ export const documentControllerFactory = (config: PageProps, viewName: string) =
       document.fullPath = SiteTree.getURLPath(reference);
       return document;
     });
-
-    console.log(documents);
     
     res.render(viewName, {
       metaTitle: config.label,

@@ -9,6 +9,6 @@ import './controllers/associationController';
 import './controllers/joinController';
 
 const v1Router = SiteTree.getExpressRouter();
-console.log(v1Router);
+// console.log(v1Router);
 
 export { v1Router as router };
