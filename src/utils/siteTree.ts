@@ -34,11 +34,18 @@ type BreadcrumbViewModel = {
   active: BreadcrumbActive;
 };
 
-type MenuViewModel = {
+interface LinkViewModel {
+  label: GenericLabel;
+  href: PageHref;
+}
+
+interface MenuViewModel extends LinkViewModel {
   label: GenericLabel;
   href: PageHref;
   children?: MenuViewModel[];
-};
+}
+
+type ChildrenViewModel = LinkViewModel[];
 
 export class SiteTree {
   static rootLabel = 'root';
@@ -204,5 +211,18 @@ export class SiteTree {
     }
 
     return router;
+  }
+
+  static getDirectChildrenLinks(reference: GenericReference): ChildrenViewModel {
+    const thisPage = SiteTree.getPage(reference);
+    const arrayhing = thisPage.children.map(childReference => {
+      const child = SiteTree.getPage(childReference);
+      return {
+        label: child.label,
+        href: SiteTree.getURLPath(child.reference)
+      };
+    });
+    console.log(arrayhing);
+    return arrayhing;
   }
 }
