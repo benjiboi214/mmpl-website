@@ -5,7 +5,6 @@ import './controllers/statsController';
 import './controllers/documentsController';
 import './controllers/historyController';
 import './controllers/aboutController';
-// import './controllers/associationController';
 import './controllers/joinController';
 
 const v1Router = SiteTree.getExpressRouter();
