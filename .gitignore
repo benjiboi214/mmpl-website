@@ -112,3 +112,8 @@ dist
 
 # HTML Template
 html-template/
+
+# Tendenci Ignores
+secrets/
+nginx-debug/
+*/**/secrets.yml
