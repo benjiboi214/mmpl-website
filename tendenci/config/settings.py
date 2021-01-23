@@ -56,12 +56,12 @@ SITE_SETTINGS_KEY=os.getenv('DJANGO_SITE_SETTINGS_KEY')
 # are actually hosted on this server.
 # If this server uses a wildcard DNS record then you can prefix the domain
 # listed here with a '.' to match all subdomains ('.example.com').
-ALLOWED_HOSTS = ['tendenci.mmpl.test.jetselliot.com']
+ALLOWED_HOSTS = ['tendenci.mmpl.prod.jetselliot.com']
 if DEBUG:
     ALLOWED_HOSTS += ['localhost', '127.0.0.1', '[::1]']
 
 CACHES['default']['BACKEND'] = 'django.core.cache.backends.memcached.PyLibMCCache'
-CACHES['default']['LOCATION'] = 'mmpl-memcached-service:11211'
+CACHES['default']['LOCATION'] = f"{os.getenv('MEMCACHED_HOST')}:{os.getenv('MEMCACHED_PORT')}"
 CACHES['default']['TIMEOUT'] = 60*60*24*30
 
 # Tendenci uses the following PostgreSQL database connection settings by
