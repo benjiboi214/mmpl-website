@@ -15,9 +15,11 @@ RUN yarn && \
 
 # Copy Application Files
 COPY ./dist /app
+COPY ./public /public
 
 # Set Directory Permissions
 RUN chown -R node:node /app
+RUN chown -R node:node /public
 
 USER node
 
