@@ -1,0 +1,155 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: mmpl-production
+  name: tendenci-persistent-volume
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: do-block-storage
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: mmpl-production
+  name: tendenci-deployment
+spec:
+  selector:
+    matchLabels:
+      app: tendenci
+  replicas: 1
+  template:
+    metadata:
+      labels: # labels to select/identify the deployment
+        app: tendenci
+    spec: # pod spec
+      initContainers:
+        - name: tendenci-config
+          image: benjiboi214/mmpl-tendenci:latest
+          imagePullPolicy: Always
+          command: ["/bin/bash"]
+          args: ["/runtime/config.sh"]
+          volumeMounts:
+            - mountPath: "/home/tendenci/install"
+              name: tendenci-persistent-volume
+      containers:
+        - name: tendenci
+          image: benjiboi214/mmpl-tendenci:latest # image we pushed
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: user
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: db-name
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: pass
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: port
+            - name: DB_CONN_MAX_AGE
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: conn-max-age
+            - name: ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: user
+            - name: ADMIN_MAIL
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: mail
+            - name: ADMIN_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: pass
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-django
+                  key: secret-key
+            - name: DJANGO_SITE_SETTINGS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-django
+                  key: site-settings-key
+            - name: MEMCACHED_HOST
+              value: "memcached-service"
+            - name: MEMCACHED_PORT
+              value: "11211"
+          volumeMounts:
+            - mountPath: "/home/tendenci/install"
+              name: tendenci-persistent-volume
+            - mountPath: "/var/log/mmpl"
+              name: tendenci-persistent-volume
+            - mountPath: "/home/tendenci/cert"
+              name: tendenci-cert
+      volumes:
+        - name: tendenci-persistent-volume
+          persistentVolumeClaim:
+            claimName: tendenci-persistent-volume
+        - name: tendenci-cert
+          secret:
+            secretName: tendenci-cert
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: mmpl-production
+  name: tendenci-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8000
+  selector:
+    app: tendenci
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: mmpl-production
+  name: tendenci-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: cluster-issuer-prod
+spec:
+  tls:
+    - hosts:
+        - tendenci.mmpl.prod.jetselliot.com
+      secretName: tendenci-certificate
+  rules:
+    - host: "tendenci.mmpl.prod.jetselliot.com"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tendenci-service
+                port:
+                  number: 80

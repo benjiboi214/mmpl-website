@@ -1,0 +1,31 @@
+<!-- Start site footer -->
+footer(class="site-footer")
+  div(class="container")
+    div(class="row")
+      div(class="col-md-6 col-sm-12")
+        div(class="widget footer-widget")
+          h4(class="widget-title") #{content.meta.footer.content_heading}
+          br()
+          p #{content.meta.footer.content}
+      div(class="col-md-3 col-md-offset-3 d-none d-md-block")
+        div(class="widget footer-widget widget_links")
+          h4(class="widget-title") Navigation
+          ul
+            mixin menuItem(subjects)
+              for subject in subjects
+                li
+                  a(href=`${subject.href}`) #{subject.label}
+            +menuItem(footerMenu)
+
+footer(class="site-footer-bottom")
+  div(class="container")
+    div(class="row")
+      div(class="col-md-6 col-sm-6 copyrights-left")
+        p #{content.meta.footer.copyright}
+      div(class="col-md-6 col-sm-6 copyrights-right")
+        if content.socials.length > 0
+          ul(class="pull-right social-icons-colored")
+            for item in content.socials
+              li(class="facebook")
+                a(href=`${item.href}`)
+                  i(class=`fa ${item.icon}`)

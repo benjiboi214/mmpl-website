@@ -1,0 +1,67 @@
+extends layouts/content_no_sidebar
+
+block breadcrumb
+  include partials/breadcrumb
+
+block content
+  h1 #{document.label}
+  p #{document.description}
+  div(class="row")
+    div(class="col-md-12")
+      if document.history
+        table(id=`${document.reference}` class="table table-bordered")
+          thead
+            tr
+              each header in headers
+                td #{header}
+          tbody
+            each lineItem in document.history
+              tr
+                if lineItem.season
+                  td #{lineItem.season}
+                else
+                  td &nbsp;
+                if lineItem.champion
+                  td #{lineItem.champion}
+                else
+                  td &nbsp;
+                if lineItem.runnersup
+                  td #{lineItem.runnersup}
+                else
+                  td &nbsp;
+                if lineItem.mvp
+                  td #{lineItem.mvp}
+                else
+                  td &nbsp;
+                if lineItem.mvpTeam
+                  td #{lineItem.mvpTeam}
+                else
+                  td &nbsp;
+                if lineItem.mvpPlayed
+                  td #{lineItem.mvpPlayed}
+                else
+                  td &nbsp;
+                if lineItem.mvpWon
+                  td #{lineItem.mvpWon}
+                else
+                  td &nbsp;
+                if lineItem.mvpLost
+                  td #{lineItem.mvpLost}
+                else
+                  td &nbsp;
+
+block append base_css
+  link(href='https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css')
+
+
+block append base_footer_js
+  script(
+    type="text/javascript"
+    src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"
+  )
+  script().
+    $(document).ready( function () {
+      var table = $('#!{document.reference}').DataTable();
+      table.page.len(15).draw();
+      table.column('0:visible').order('desc').draw();
+    } );

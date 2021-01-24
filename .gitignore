@@ -109,3 +109,11 @@ dist
 
 # OSX Index
 .DS_Store
+
+# HTML Template
+html-template/
+
+# Tendenci Ignores
+secrets/
+nginx-debug/
+*/**/secrets.yml
