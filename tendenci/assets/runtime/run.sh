@@ -119,7 +119,7 @@ set_site_url()
   # Set Site URL
   echo "Setting Site URL" && echo ""
   cd "$TENDENCI_PROJECT_ROOT"
-  "$PYTHON" manage.py set_setting site global siteurl "https://tendenci.mmpl.test.jetselliot.com/" 	
+  "$PYTHON" manage.py set_setting site global siteurl "https://tendenci.mmpl.prod.jetselliot.com/" 	
 }
 
 
