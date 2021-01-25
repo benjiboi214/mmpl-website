@@ -19,6 +19,14 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
+          env:
+            - name: STATIC_PORT
+              value: "80"
+            - name: STATIC_HOST
+              value: "web.mmpl.test.jetselliot.com"
+            - name: STATIC_SCHEME
+              value: "https"
+
 ---
 apiVersion: v1
 kind: Service
