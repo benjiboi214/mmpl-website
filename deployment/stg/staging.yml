@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mmpl-staging
+  labels:
+    name: mmpl-staging
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: cluster-issuer
+  namespace: mmpl-staging
+spec:
+  acme:
+    email: mmpl.staging@systemiphus.com
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    preferredChain: "ISRG Root X1"
+    privateKeySecretRef:
+      name: mmpl-staging-ssl-certificate
+    solvers:
+      - http01:
+          ingress:
+            class: nginx
