@@ -17,6 +17,12 @@ app.set('scheme', process.env.SCHEME || 'http');
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'pug');
 
+const static_host = {
+  scheme: process.env.STATIC_SCHEME || app.get('scheme'),
+  host: process.env.STATIC_HOST || app.get('host'),
+  port: process.env.STATIC_PORT || app.get('port')
+};
+
 // Express Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,11 +30,7 @@ app.use(
   express.static(path.join(__dirname, '../public'), { maxAge: 31557600000 })
 );
 app.use(function (req, res, next) {
-  res.locals.referenceBase = {
-    scheme: app.get('scheme'),
-    host: app.get('host'),
-    port: app.get('port')
-  };
+  res.locals.referenceBase = static_host;
   res.locals.headerMenu = SiteTree.getHeaderMenu();
   res.locals.footerMenu = SiteTree.getFooterMenu();
   res.locals.content = {
