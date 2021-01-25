@@ -22,6 +22,9 @@ lib-cov
 coverage
 *.lcov
 
+# HTML Test Reports
+TestReports
+
 # nyc test coverage
 .nyc_output
 
@@ -38,6 +41,7 @@ bower_components
 build/Release
 
 # Dependency directories
+yarn.lock
 node_modules/
 jspm_packages/
 
@@ -102,3 +106,14 @@ dist
 
 # TernJS port file
 .tern-port
+
+# OSX Index
+.DS_Store
+
+# HTML Template
+html-template/
+
+# Tendenci Ignores
+secrets/
+nginx-debug/
+*/**/secrets.yml

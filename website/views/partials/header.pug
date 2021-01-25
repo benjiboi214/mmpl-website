@@ -1,0 +1,37 @@
+div(class="topbar")
+  div(class="container")
+    div(class="row")
+      div(class="col-md-6  col-sm-6")
+        p #{content.meta.header.title}
+      div(class="col-md-6 col-sm-6")
+        if content.socials.length > 0
+          ul(class="pull-right social-icons-colored")
+            for item in content.socials
+              li(class="facebook")
+                a(href=`${item.href}`)
+                  i(class=`fa ${item.icon}`)
+
+div(class="site-header-wrapper")
+  header(class="site-header")
+    div(class="container sp-cont")
+      div(class="site-logo")
+        h1
+          a(href="/")
+            img(src=`${content.meta.header.image}` alt="Logo")
+
+      a(href="#" class="visible-sm visible-xs" id="menu-toggle")
+        i(class="fa fa-bars")
+      
+      mixin menuItem(subjects)
+        for subject in subjects
+          li
+            a(href=`${subject.href}`) #{subject.label}
+            if subject.children
+              ul(class="dropdown")
+                +menuItem(subject.children)
+
+
+      <!-- Main Navigation -->
+      nav(class="main-navigation dd-menu toggle-menu" role="navigation")
+        ul(class="sf-menu")
+          +menuItem(headerMenu)

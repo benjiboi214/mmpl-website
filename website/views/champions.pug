@@ -1,0 +1,19 @@
+extends layouts/content_no_sidebar
+
+block breadcrumb
+  include partials/breadcrumb
+
+block content
+  div(class="membership-plans")
+    each two in documents
+      div(class="row")
+        each document in two
+          div(class="col-md-6")
+            div(class="icon-box ibox-rounded")
+                div(class="ibox-icon")
+                    i(class=`fa ${document.icon}`)
+                h3 #{document.label}
+                p #{document.description}
+                a(href=`${document.fullPath}` class="btn btn-default").
+                  More
+      div(class="spacer-50 hidden-sm hidden-xs")
