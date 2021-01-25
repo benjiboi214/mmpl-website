@@ -16,10 +16,12 @@ RUN yarn && \
 # Copy Application Files
 COPY ./dist /app
 COPY ./public /public
+COPY ./views /views
 
 # Set Directory Permissions
 RUN chown -R node:node /app
 RUN chown -R node:node /public
+RUN chown -R node:node /views
 
 USER node
 
