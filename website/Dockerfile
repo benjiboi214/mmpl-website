@@ -16,12 +16,18 @@ RUN yarn && \
 # Copy Application Files
 COPY ./dist /app
 COPY ./public /public
+<<<<<<< HEAD
 COPY ./views /views
+=======
+>>>>>>> 913b78072f4af3c20f897f09f822a38a30bdf730
 
 # Set Directory Permissions
 RUN chown -R node:node /app
 RUN chown -R node:node /public
+<<<<<<< HEAD
 RUN chown -R node:node /views
+=======
+>>>>>>> 913b78072f4af3c20f897f09f822a38a30bdf730
 
 USER node
 

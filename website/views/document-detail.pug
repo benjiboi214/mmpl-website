@@ -1,0 +1,46 @@
+extends layouts/content_no_sidebar
+
+block breadcrumb
+  include partials/breadcrumb
+
+block content
+  div(class="row")
+    div(class="col-md-6 col-sm-6")
+      h1 #{document.label}
+      p #{document.description}
+      
+      if document.subtitle
+        h2 #{document.subtitle}
+        if document.subDescription
+          ul(class="angles")
+            for item in document.subDescription
+              li #{item}
+      
+      br
+
+      if document.pdfRef
+        a(href=`${document.pdfRef}` class="btn btn-default" download=`${document.pdfRef}`)
+          i(class="fa fa-file-pdf-o")
+          |  Download as PDF
+      br
+      br
+
+      if document.imageRef
+        each image, index in document.imageRef
+          a(href=`${image}` class="btn btn-default" download=`${image}`)
+            i(class="fa fa-file-image-o")
+            if document.imageRef.length == 1
+              |  Download as PNG
+            else
+              |  Download #{index + 1} of #{document.imageRef.length} as PNG
+          br
+          br
+          | 
+
+    if document.imageRef
+      div(class="col-md-6 col-sm-6")
+        div(class="flexslider galleryflex" data-pagination="yes" data-autoplay="yes")
+          ul(class="slides")
+            for image in document.imageRef
+              li(class="slide")
+                img(src=`${image}` alt="")

@@ -1,0 +1,10 @@
+<!-- Notice Bar -->
+div(class="notice-bar")
+  div(class="container")
+    ol(class="breadcrumb")
+      for breadcrumb in breadcrumbs
+        if breadcrumb.active
+          li(class='active') #{breadcrumb.label}
+        else
+          li
+            a(href=`${breadcrumb.href}`) #{breadcrumb.label}
