@@ -17,11 +17,16 @@ app.set('scheme', process.env.SCHEME || 'http');
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'pug');
 
-const static_host = {
-  scheme: process.env.STATIC_SCHEME || app.get('scheme'),
-  host: process.env.STATIC_HOST || app.get('host'),
-  port: process.env.STATIC_PORT || app.get('port')
-};
+let staticBase = '';
+const cdnEnabled = process.env.CDN_ENABLED;
+const cdnHost = process.env.CDN_HOST;
+const cdnPath = process.env.CDN_PATH;
+
+if (cdnEnabled && cdnHost && cdnPath) {
+  staticBase = `https://${cdnHost}/${cdnPath}`;
+} else {
+  staticBase = `${app.get('scheme')}://app.get('host'):${app.get('port')}`;
+}
 
 // Express Middleware
 app.use(bodyParser.json());
@@ -30,7 +35,7 @@ app.use(
   express.static(path.join(__dirname, '../public'), { maxAge: 31557600000 })
 );
 app.use(function (req, res, next) {
-  res.locals.referenceBase = static_host;
+  res.locals.staticBase = staticBase;
   res.locals.headerMenu = SiteTree.getHeaderMenu();
   res.locals.footerMenu = SiteTree.getFooterMenu();
   res.locals.content = {
