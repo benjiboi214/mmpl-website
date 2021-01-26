@@ -20,12 +20,12 @@ spec:
           ports:
             - containerPort: 3000
           env:
-            - name: STATIC_PORT
-              value: "443"
-            - name: STATIC_HOST
-              value: "web.mmpl.test.jetselliot.com"
-            - name: STATIC_SCHEME
-              value: "https"
+            - name: CDN_ENABLED
+              value: "true"
+            - name: CDN_HOST
+              value: "stg.static.jetselliot.com"
+            - name: CDN_PATH
+              value: "mmpl/website/l/"
 ---
 apiVersion: v1
 kind: Service
