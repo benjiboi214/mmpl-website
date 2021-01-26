@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: mmpl-staging
+  name: website-static-config
+data:
+  port: "443"
+  host: "stg.static.jetselliot.com"
+  scheme: "https"
+  path: "mmpl/website/"
+  revision: "646a29d"
