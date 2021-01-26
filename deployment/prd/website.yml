@@ -23,7 +23,7 @@ spec:
             - name: CDN_ENABLED
               value: "true"
             - name: CDN_HOST
-              value: "stg.static.jetselliot.com"
+              value: "stg.prod.jetselliot.com"
             - name: CDN_PATH
               value: "mmpl/website/l/"
 ---
