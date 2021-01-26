@@ -15,10 +15,17 @@ spec:
     spec: # pod spec
       containers:
         - name: static-web
-          image: benjiboi214/mmpl-do:cicd_test # image we pushed
+          image: benjiboi214/mmpl-website:production # image we pushed
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
+          env:
+            - name: STATIC_PORT
+              value: "443"
+            - name: STATIC_HOST
+              value: "web.mmpl.prod.jetselliot.com"
+            - name: STATIC_SCHEME
+              value: "https"
 ---
 apiVersion: v1
 kind: Service
