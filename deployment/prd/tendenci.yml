@@ -97,6 +97,16 @@ spec:
                 secretKeyRef:
                   name: tendenci-django
                   key: site-settings-key
+            - name: AWS_STATIC_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-aws-static
+                  key: access-key-id
+            - name: AWS_STATIC_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-aws-static
+                  key: access-secret-key
             - name: MEMCACHED_HOST
               value: "memcached-service"
             - name: MEMCACHED_PORT

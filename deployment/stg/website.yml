@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: mmpl-staging
+  name: website-deployment
+spec:
+  selector:
+    matchLabels:
+      app: static-web
+  replicas: 1
+  template:
+    metadata:
+      labels: # labels to select/identify the deployment
+        app: static-web
+    spec: # pod spec
+      containers:
+        - name: static-web
+          image: benjiboi214/mmpl-website:main # image we pushed
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: CDN_ENABLED
+              value: "true"
+            - name: CDN_HOST
+              value: "stg.static.jetselliot.com"
+            - name: CDN_PATH
+              value: "mmpl/website/l/"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: mmpl-staging
+  name: website-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 3000
+  selector:
+    app: static-web
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: mmpl-staging
+  name: website-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: cluster-issuer-staging
+spec:
+  tls:
+    - hosts:
+        - web.mmpl.test.jetselliot.com
+      secretName: website-certificate
+  rules:
+    - host: "web.mmpl.test.jetselliot.com"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: website-service
+                port:
+                  number: 80

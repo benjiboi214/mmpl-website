@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-static-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx-static-container
+  replicas: 1
+  template:
+    metadata:
+      labels: # labels to select/identify the deployment
+        app: nginx-static-container
+    spec: # pod spec
+      # initContainers:
+      #   - name: pgsql-data-permission-fix
+      #     image: busybox
+      #     command: ["/bin/chmod","-R","777", "/usr/share/nginx/html"]
+      #     volumeMounts:
+      #       - mountPath: "/usr/share/nginx/html/conf"
+      #         name: mmpl-tendenci-test-project
+      #       - mountPath: "/usr/share/nginx/html/log"
+      #         name: mmpl-tendenci-test-log
+      containers:
+        - name: nginx-static-spec
+          image: benjiboi214/nginx-static:latest # image we pushed
+          # command: ["ls"]
+          # args: [-la, "/home/tendenci/install"]
+          volumeMounts:
+            - mountPath: "/usr/share/nginx/html"
+              name: mmpl-tendenci-test-project
+            # - mountPath: "/usr/share/nginx/html"
+            #   name: mmpl-tendenci-test-log
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+      volumes:
+        - name: mmpl-tendenci-test-project
+          persistentVolumeClaim:
+            claimName: mmpl-tendenci-test-project
+        - name: mmpl-tendenci-test-log
+          persistentVolumeClaim:
+            claimName: mmpl-tendenci-test-log

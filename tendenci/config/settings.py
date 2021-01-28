@@ -244,16 +244,18 @@ CSRF_COOKIE_SECURE = True  # Send CSRF Cookie over HTTPS only
 # Amazon S3 Storage Settings
 # ---------------------------------------------------------------------------- #
 
-#AWS_LOCATION = ''    # This is usually your site name
-#AWS_ACCESS_KEY_ID = ''
-#AWS_SECRET_ACCESS_KEY = ''
-#AWS_STORAGE_BUCKET_NAME = ''
-#USE_S3_STORAGE = all([
-#    AWS_LOCATION,
-#    AWS_ACCESS_KEY_ID,
-#    AWS_SECRET_ACCESS_KEY,
-#    AWS_STORAGE_BUCKET_NAME
-#])
+AWS_LOCATION = 'mmpl/tendenci/'    # This is usually your site name
+AWS_ACCESS_KEY_ID = os.getenv('AWS_STATIC_ACCESS_KEY_ID') #  'WKEHAJNHYZUBPVQXDKYY'
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_STATIC_SECRET_ACCESS_KEY') # 'aGbN3wc7EhbeLAhgn5F/QEo5WZeNuV08kmc8AwmWDcA'
+AWS_STORAGE_BUCKET_NAME = 'prod.static'
+AWS_S3_ENDPOINT_URL = 'https://sfo3.digitaloceanspaces.com'
+USE_S3_STORAGE = all([
+   AWS_LOCATION,
+   AWS_ACCESS_KEY_ID,
+   AWS_SECRET_ACCESS_KEY,
+   AWS_STORAGE_BUCKET_NAME,
+   AWS_S3_ENDPOINT_URL
+])
 
 
 # ---------------------------------------------------------------------------- #
