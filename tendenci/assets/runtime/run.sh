@@ -88,7 +88,13 @@ function initial_setup
     cd "$TENDENCI_PROJECT_ROOT"
     
     "$PYTHON" manage.py initial_migrate 
-    "$PYTHON" manage.py deploy
+    # "$PYTHON" manage.py deploy
+    "$PYTHON" manage.py collectstatic --noinput
+    "$PYTHON" manage.py update_settings
+    "$PYTHON" manage.py clear_theme_cache
+    "$PYTHON" manage.py populate_default_entity
+    "$PYTHON" manage.py populate_entity_and_auth_group_columns
+    "$PYTHON" manage.py loaddata "initial_data.json"
     "$PYTHON" manage.py load_tendenci_defaults
     "$PYTHON" manage.py update_dashboard_stats
     
