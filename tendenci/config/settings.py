@@ -47,8 +47,8 @@ if DEBUG:
 # at https://www.grc.com/passwords.htm (Use the
 # "63 random alpha-numeric characters" string, and refresh the page to get an
 # additional string.)
-SECRET_KEY=os.getenv('DJANGO_SECRET_KEY')
-SITE_SETTINGS_KEY=os.getenv('DJANGO_SITE_SETTINGS_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+SITE_SETTINGS_KEY = os.getenv('DJANGO_SITE_SETTINGS_KEY')
 
 # This must be set to a list of fully qualified domain names that are valid for
 # this site.  Connections which request any other name will be rejected.
@@ -141,7 +141,7 @@ CSRF_COOKIE_SECURE = True  # Send CSRF Cookie over HTTPS only
 # notifications.
 #ADMINS = [('John', 'john@example.com'), ('Mary', 'mary@example.com')]
 # To disable error emails and send only non-error Tendenci email notifications:
-#disable_admin_emails()
+# disable_admin_emails()
 
 # To send EMail via an SMTP server:
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -244,18 +244,36 @@ CSRF_COOKIE_SECURE = True  # Send CSRF Cookie over HTTPS only
 # Amazon S3 Storage Settings
 # ---------------------------------------------------------------------------- #
 
-AWS_LOCATION = 'mmpl/tendenci/'    # This is usually your site name
-AWS_ACCESS_KEY_ID = os.getenv('AWS_STATIC_ACCESS_KEY_ID') #  'WKEHAJNHYZUBPVQXDKYY'
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_STATIC_SECRET_ACCESS_KEY') # 'aGbN3wc7EhbeLAhgn5F/QEo5WZeNuV08kmc8AwmWDcA'
+# Access Settings
+AWS_ACCESS_KEY_ID = os.getenv('AWS_STATIC_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_STATIC_SECRET_ACCESS_KEY')
+
+# Connection Settings
+AWS_S3_CUSTOM_DOMAIN = 'prod.static.jetselliot.com'
 AWS_STORAGE_BUCKET_NAME = 'prod.static'
+AWS_DEFAULT_ACL = 'public-read'
+
+# Duped due to tendenci config (?)
 AWS_S3_ENDPOINT_URL = 'https://sfo3.digitaloceanspaces.com'
+S3_ROOT_URL = 'https://sfo3.digitaloceanspaces.com'
+
+# Where to upload in the bucket
+AWS_LOCATION = 'mmpl/tendenci/'
+STATIC_S3_PATH = 'mmpl/tendenci/static/'
+DEFAULT_S3_PATH = 'mmpl/tendenci/media/'
+
 USE_S3_STORAGE = all([
-   AWS_LOCATION,
-   AWS_ACCESS_KEY_ID,
-   AWS_SECRET_ACCESS_KEY,
-   AWS_STORAGE_BUCKET_NAME,
-   AWS_S3_ENDPOINT_URL
+    S3_ROOT_URL,
+    AWS_LOCATION,
+    AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY,
+    AWS_STORAGE_BUCKET_NAME,
+    AWS_S3_ENDPOINT_URL
 ])
+
+# Django Storages Config
+DEFAULT_FILE_STORAGE = 'tendenci.libs.boto_s3.utils.DefaultStorage'
+STATICFILES_STORAGE = 'tendenci.libs.boto_s3.utils.StaticStorage'
 
 
 # ---------------------------------------------------------------------------- #
@@ -274,10 +292,10 @@ USE_S3_STORAGE = all([
 #INSTALLED_APPS += ['example_app']
 
 # To remove a default app from INSTALLED_APPS:
-#INSTALLED_APPS.remove('some_app')
+# INSTALLED_APPS.remove('some_app')
 # Or:
 #remove_apps = ['app1', 'app2']
-#for app in remove_apps:
+# for app in remove_apps:
 #    INSTALLED_APPS.remove(app)
 
 # To enable custom URL patterns to be configured in urls.py:
@@ -305,14 +323,14 @@ set_debug_log_filename('/var/log/mmpl/debug.log')
 
 # To change the log level for the app.log file:
 # (Valid levels are: 'DEBUG' 'INFO' 'WARNING' 'ERROR' 'CRITICAL')
-#set_app_log_level('INFO')
+# set_app_log_level('INFO')
 
 # To disable logging:
 # disable_app_log()
 # disable_debug_log()
 
 # To disable debug.log and write DEBUG messages to app.log when DEBUG is True:
-#disable_debug_log()
+# disable_debug_log()
 #if DEBUG: set_app_log_level('DEBUG')
 
 # To log to the console in addition to the log files (or instead of the log
@@ -345,7 +363,7 @@ RAVEN_CONFIG = {'dsn': SENTRY_DSN}
 # Note that if you are running NGINX, all clients appear to be connecting from
 # 127.0.0.1, so this example configuration will give all clients access to these
 # debugging capabilities.
-#if DEBUG:
+# if DEBUG:
 #    INTERNAL_IPS = ['127.0.0.1', '::1']
 
 # Uncomment this setting to enable the Django Debug Toolbar for profiling
