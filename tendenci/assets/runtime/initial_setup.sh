@@ -40,11 +40,11 @@ function initial_setup()
   echo  "Intital set up completed" && echo ""
 }
 
-if [ ! -f "$TENDENCI_PROJECT_ROOT/conf/first_run" ]; then
-  initial_setup
-fi
-
 if [ -f "$TENDENCI_PROJECT_ROOT/conf/first_run" ]; then
   echo "Cannot run setup once already run" >&2
   exit 1
+fi
+
+if [ ! -f "$TENDENCI_PROJECT_ROOT/conf/first_run" ]; then
+  initial_setup
 fi
