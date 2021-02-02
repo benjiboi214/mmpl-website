@@ -103,6 +103,14 @@ function collect_static()
   echo "Done collecting and uploading static files" && echo ""
 }
 
+function find_static()
+{
+  echo "Debugging find static" && echo ""
+  cd "$TENDENCI_PROJECT_ROOT"
+  "$PYTHON" manage.py findstatic bootstrap3/css/bootstrap.min.css --verbosity 12
+  echo "Done debugging find static" && echo ""
+}
+
 function update_tendenci_app_settings()
 {
   echo "Updating tendenci app settings" && echo ""
