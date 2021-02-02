@@ -301,6 +301,9 @@ STATICFILES_STORAGE = 'tendenci.libs.boto_s3.utils.StaticStorage'
 # To enable custom URL patterns to be configured in urls.py:
 ROOT_URLCONF = 'conf.urls'
 
+print("DEBUG: Static File Dirs")
+print(STATICFILES_DIRS)
+
 # To enable the Tendenci helpdesk app, uncomment this setting, uncomment
 # ROOT_URLCONF above, and uncomment the helpdesk urlpattern in urls.py
 #INSTALLED_APPS += ['markdown_deux', 'bootstrapform', 'tendenci.apps.helpdesk']
