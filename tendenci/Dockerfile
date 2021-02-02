@@ -1,5 +1,4 @@
 FROM ubuntu:18.04
-MAINTAINER Tendenci <programmers@tendenci.com>
 
 ENV APP_NAME="mmpl" \
     APP_CONFIG_DIR="/home/tendenci/config" \
@@ -28,8 +27,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y locales && locale-gen en_U
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 COPY assets/build/ "$TENDENCI_HOME"
-COPY assets/runtime/run.sh /runtime/run.sh
-COPY assets/runtime/config.sh /runtime/config.sh
+COPY assets/runtime/ /runtime/
 COPY config/ "$APP_CONFIG_DIR"
 
 RUN bash -x "$TENDENCI_HOME/install.sh"
