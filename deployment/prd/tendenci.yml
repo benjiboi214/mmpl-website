@@ -26,15 +26,6 @@ spec:
       labels: # labels to select/identify the deployment
         app: tendenci
     spec: # pod spec
-      initContainers:
-        - name: tendenci-config
-          image: benjiboi214/mmpl-tendenci:latest
-          imagePullPolicy: Always
-          command: ["/bin/bash"]
-          args: ["/runtime/config.sh"]
-          volumeMounts:
-            - mountPath: "/home/tendenci/install"
-              name: tendenci-persistent-volume
       containers:
         - name: tendenci
           image: benjiboi214/mmpl-tendenci:latest # image we pushed
