@@ -4,6 +4,8 @@ metadata:
   namespace: mmpl-production
   name: tendenci-copy-config
 spec:
+  backoffLimit: 0
+  completions: 1
   template:
     spec:
       containers:
@@ -15,6 +17,7 @@ spec:
           volumeMounts:
             - mountPath: "/home/tendenci/install"
               name: tendenci-persistent-volume
+      restartPolicy: Never
       volumes:
         - name: tendenci-persistent-volume
           persistentVolumeClaim:
