@@ -107,7 +107,7 @@ function find_static()
 {
   echo "Debugging find static" && echo ""
   cd "$TENDENCI_PROJECT_ROOT"
-  "$PYTHON" manage.py findstatic bootstrap3/css/bootstrap.min.css --verbosity 12
+  "$PYTHON" manage.py findstatic bootstrap3/css/bootstrap.min.css --verbosity 3
   echo "Done debugging find static" && echo ""
 }
 
