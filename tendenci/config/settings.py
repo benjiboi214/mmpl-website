@@ -374,7 +374,7 @@ RAVEN_CONFIG = {'dsn': SENTRY_DSN}
 # above will be able to use the toolbar.
 # This toolbar may expose internal/private data, and it will slow down your site
 # significantly, so use this with caution.
-#DEBUG_TOOLBAR_ENABLED = True
+DEBUG_TOOLBAR_ENABLED = True
 
 
 # ---------------------------------------------------------------------------- #
