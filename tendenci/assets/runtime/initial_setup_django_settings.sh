@@ -7,25 +7,10 @@ PYTHON=$(which python3)
 # Bring in management helper commands
 source /runtime/management.sh;
 
-function initial_setup()
+function initial_setup_django_settings()
 {
-  echo  "Starting initial setup" && echo ""
+  echo  "Starting initial django setup" && echo ""
 
-  # Prep users and dirs
-  check_user
-  check_dirs
-
-  # Create the project files
-  create_tendenci_project
-  install_theme
-  set_directory_permissions
-
-  # Copy the deployment config volume
-  copy_config_from_image
-
-  # Initial Django commands
-  initial_migrate_database
-  collect_static
   update_tendenci_app_settings
   clear_theme_cache
   populate_default_entity_and_auth_groups
@@ -37,7 +22,7 @@ function initial_setup()
 
   # Trip flag after setup
   touch "$TENDENCI_PROJECT_ROOT/conf/first_run"
-  echo  "Intital set up completed" && echo ""
+  echo  "Finished initial django setup" && echo ""
 }
 
 if [ -f "$TENDENCI_PROJECT_ROOT/conf/first_run" ]; then
@@ -46,5 +31,5 @@ if [ -f "$TENDENCI_PROJECT_ROOT/conf/first_run" ]; then
 fi
 
 if [ ! -f "$TENDENCI_PROJECT_ROOT/conf/first_run" ]; then
-  initial_setup
+  initial_setup_django_settings
 fi

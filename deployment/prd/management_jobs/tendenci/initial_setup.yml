@@ -4,16 +4,338 @@ metadata:
   namespace: mmpl-production
   name: tendenci-initial-setup
 spec:
+  parallelism: 1
   backoffLimit: 0
   completions: 1
   template:
     spec:
-      containers:
-        - name: tendenci-initial-setup
+      initContainers:
+        - name: tendenci-setup-project-dirs
           image: benjiboi214/mmpl-tendenci:latest
           imagePullPolicy: Always
           command: ["/bin/bash"]
-          args: ["/runtime/initial_setup.sh"]
+          args: ["/runtime/initial_setup_dirs_project.sh"]
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: user
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: db-name
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: pass
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: port
+            - name: DB_CONN_MAX_AGE
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: conn-max-age
+            - name: ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: user
+            - name: ADMIN_MAIL
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: mail
+            - name: ADMIN_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: pass
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-django
+                  key: secret-key
+            - name: DJANGO_SITE_SETTINGS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-django
+                  key: site-settings-key
+            - name: AWS_STATIC_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-aws-static
+                  key: access-key-id
+            - name: AWS_STATIC_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-aws-static
+                  key: access-secret-key
+            - name: MEMCACHED_HOST
+              value: "memcached-service"
+            - name: MEMCACHED_PORT
+              value: "11211"
+          volumeMounts:
+            - mountPath: "/home/tendenci/install"
+              name: tendenci-persistent-volume
+            - mountPath: "/home/tendenci/cert"
+              name: tendenci-cert
+        - name: tendenci-initial-copy-config
+          image: benjiboi214/mmpl-tendenci:latest
+          imagePullPolicy: Always
+          command: ["/bin/bash"]
+          args: ["/runtime/copy_config.sh"]
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: user
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: db-name
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: pass
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: port
+            - name: DB_CONN_MAX_AGE
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: conn-max-age
+            - name: ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: user
+            - name: ADMIN_MAIL
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: mail
+            - name: ADMIN_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: pass
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-django
+                  key: secret-key
+            - name: DJANGO_SITE_SETTINGS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-django
+                  key: site-settings-key
+            - name: AWS_STATIC_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-aws-static
+                  key: access-key-id
+            - name: AWS_STATIC_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-aws-static
+                  key: access-secret-key
+            - name: MEMCACHED_HOST
+              value: "memcached-service"
+            - name: MEMCACHED_PORT
+              value: "11211"
+          volumeMounts:
+            - mountPath: "/home/tendenci/install"
+              name: tendenci-persistent-volume
+            - mountPath: "/home/tendenci/cert"
+              name: tendenci-cert
+        - name: tendenci-initial-migrate
+          image: benjiboi214/mmpl-tendenci:latest
+          imagePullPolicy: Always
+          command: ["/bin/bash"]
+          args: ["/runtime/initial_setup_initial_migrate.sh"]
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: user
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: db-name
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: pass
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: port
+            - name: DB_CONN_MAX_AGE
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: conn-max-age
+            - name: ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: user
+            - name: ADMIN_MAIL
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: mail
+            - name: ADMIN_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: pass
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-django
+                  key: secret-key
+            - name: DJANGO_SITE_SETTINGS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-django
+                  key: site-settings-key
+            - name: AWS_STATIC_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-aws-static
+                  key: access-key-id
+            - name: AWS_STATIC_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-aws-static
+                  key: access-secret-key
+            - name: MEMCACHED_HOST
+              value: "memcached-service"
+            - name: MEMCACHED_PORT
+              value: "11211"
+          volumeMounts:
+            - mountPath: "/home/tendenci/install"
+              name: tendenci-persistent-volume
+            - mountPath: "/home/tendenci/cert"
+              name: tendenci-cert
+        - name: tendenci-initial-collect-static
+          image: benjiboi214/mmpl-tendenci:latest
+          imagePullPolicy: Always
+          command: ["/bin/bash"]
+          args: ["/runtime/collect_static.sh"]
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: user
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: db-name
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: pass
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: port
+            - name: DB_CONN_MAX_AGE
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-postgres
+                  key: conn-max-age
+            - name: ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: user
+            - name: ADMIN_MAIL
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: mail
+            - name: ADMIN_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-admin
+                  key: pass
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-django
+                  key: secret-key
+            - name: DJANGO_SITE_SETTINGS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-django
+                  key: site-settings-key
+            - name: AWS_STATIC_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-aws-static
+                  key: access-key-id
+            - name: AWS_STATIC_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-aws-static
+                  key: access-secret-key
+            - name: MEMCACHED_HOST
+              value: "memcached-service"
+            - name: MEMCACHED_PORT
+              value: "11211"
+          volumeMounts:
+            - mountPath: "/home/tendenci/install"
+              name: tendenci-persistent-volume
+            - mountPath: "/home/tendenci/cert"
+              name: tendenci-cert
+      containers:
+        - name: tendenci-initial-django-settings
+          image: benjiboi214/mmpl-tendenci:latest
+          imagePullPolicy: Always
+          command: ["/bin/bash"]
+          args: ["/runtime/initial_setup_django_settings.sh"]
           env:
             - name: DB_USER
               valueFrom:
