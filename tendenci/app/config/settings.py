@@ -22,7 +22,7 @@ from tendenci.settings import *
 # To enable verbose error pages, debug logging, and other features that are
 # useful for development/testing but should not be enabled on live sites,
 # uncomment this setting.
-# DEBUG = True
+DEBUG = True
 
 if DEBUG:
     disable_template_cache()
@@ -60,9 +60,11 @@ ALLOWED_HOSTS = ['tendenci.mmpl.prod.jetselliot.com']
 if DEBUG:
     ALLOWED_HOSTS += ['localhost', '127.0.0.1', '[::1]']
 
-CACHES['default']['BACKEND'] = 'django.core.cache.backends.memcached.PyLibMCCache'
-CACHES['default']['LOCATION'] = f"{os.getenv('MEMCACHED_HOST')}:{os.getenv('MEMCACHED_PORT')}"
-CACHES['default']['TIMEOUT'] = 60*60*24*30
+CACHES['default']['BACKEND'] = 'django.core.cache.backends.dummy.DummyCache'
+
+# CACHES['default']['BACKEND'] = 'django.core.cache.backends.memcached.PyLibMCCache'
+# CACHES['default']['LOCATION'] = f"{os.getenv('MEMCACHED_HOST')}:{os.getenv('MEMCACHED_PORT')}"
+# CACHES['default']['TIMEOUT'] = 60*60*24*30
 
 # Tendenci uses the following PostgreSQL database connection settings by
 # default.  Uncomment and configure settings here to override the defaults.
@@ -389,8 +391,8 @@ RAVEN_CONFIG = {'dsn': SENTRY_DSN}
 # Note that if you are running NGINX, all clients appear to be connecting from
 # 127.0.0.1, so this example configuration will give all clients access to these
 # debugging capabilities.
-# if DEBUG:
-#    INTERNAL_IPS = ['127.0.0.1', '::1']
+if DEBUG:
+    INTERNAL_IPS = ['127.0.0.1', '::1', '119.18.26.20', '*']
 
 # Uncomment this setting to enable the Django Debug Toolbar for profiling
 # (measuring CPU/SQL/cache/etc timing).  Only clients matching INTERNAL_IPS
