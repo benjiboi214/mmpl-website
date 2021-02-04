@@ -133,6 +133,12 @@ spec:
     - name: static
       port: 81
       targetPort: 8001
+    - name: media
+      port: 82
+      targetPort: 8001
+    - name: themes
+      port: 83
+      targetPort: 8001
   selector:
     app: tendenci
 ---
@@ -160,6 +166,20 @@ spec:
                 name: tendenci-service
                 port:
                   number: 81
+          - path: /media
+            pathType: Prefix
+            backend:
+              service:
+                name: tendenci-service
+                port:
+                  number: 82
+          - path: /themes
+            pathType: Prefix
+            backend:
+              service:
+                name: tendenci-service
+                port:
+                  number: 83
           - path: /
             pathType: Prefix
             backend:
