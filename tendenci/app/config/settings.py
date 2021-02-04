@@ -22,7 +22,7 @@ from tendenci.settings import *
 # To enable verbose error pages, debug logging, and other features that are
 # useful for development/testing but should not be enabled on live sites,
 # uncomment this setting.
-#DEBUG = True
+# DEBUG = True
 
 if DEBUG:
     disable_template_cache()
@@ -244,36 +244,61 @@ CSRF_COOKIE_SECURE = True  # Send CSRF Cookie over HTTPS only
 # Amazon S3 Storage Settings
 # ---------------------------------------------------------------------------- #
 
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+
 # Access Settings
-AWS_ACCESS_KEY_ID = os.getenv('AWS_STATIC_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_STATIC_SECRET_ACCESS_KEY')
+# AWS_ACCESS_KEY_ID = os.getenv('AWS_STATIC_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = os.getenv('AWS_STATIC_SECRET_ACCESS_KEY')
 
 # Connection Settings
-AWS_S3_CUSTOM_DOMAIN = 'prod.static.jetselliot.com'
-AWS_STORAGE_BUCKET_NAME = 'prod.static'
-AWS_DEFAULT_ACL = 'public-read'
+# AWS_S3_CUSTOM_DOMAIN = 'prod.static.jetselliot.com'
+# AWS_STORAGE_BUCKET_NAME = 'prod.static'
+# AWS_DEFAULT_ACL = 'public-read'
 
 # Duped due to tendenci config (?)
-AWS_S3_ENDPOINT_URL = 'https://sfo3.digitaloceanspaces.com'
-S3_ROOT_URL = 'https://sfo3.digitaloceanspaces.com'
+# AWS_S3_ENDPOINT_URL = 'https://sfo3.digitaloceanspaces.com'  # django-storages
+# Tendenci
+# Used in theme app for warning about deprecation (???)
+# Used to construct a static URL if USE_S3_STORAGE is enabled
+# S3_ROOT_URL = 'https://sfo3.digitaloceanspaces.com'  # Changed Thu Afternoon
 
 # Where to upload in the bucket
-AWS_LOCATION = 'mmpl/tendenci/'
-STATIC_S3_PATH = 'mmpl/tendenci/static/'
-DEFAULT_S3_PATH = 'mmpl/tendenci/media/'
+# AWS_LOCATION = 'mmpl/tendenci/'
+# STATIC_S3_PATH = 'mmpl/tendenci/static/'
+# DEFAULT_S3_PATH = 'mmpl/tendenci/media/'
 
-USE_S3_STORAGE = all([
-    S3_ROOT_URL,
-    AWS_LOCATION,
-    AWS_ACCESS_KEY_ID,
-    AWS_SECRET_ACCESS_KEY,
-    AWS_STORAGE_BUCKET_NAME,
-    AWS_S3_ENDPOINT_URL
-])
+# Tendenci uses this for:
+# Determining URL rewrites for redirect because they weren't setting STATIC_URL (?)
+# Fuck me this code base is a mess
+# USE_S3_STORAGE = False  # Changed Thu Afternoon
 
 # Django Storages Config
-DEFAULT_FILE_STORAGE = 'tendenci.libs.boto_s3.utils.DefaultStorage'
-STATICFILES_STORAGE = 'tendenci.libs.boto_s3.utils.StaticStorage'
+# DEFAULT_FILE_STORAGE = 'tendenci.libs.boto_s3.utils.DefaultStorage'
+# STATICFILES_STORAGE = 'tendenci.libs.boto_s3.utils.StaticStorage'
+
+# STATIC_URL = "https://prod.static.jetselliot.com/mmpl/tendenci/static/"
+# MEDIA_URL = "https://prod.static.jetselliot.com/mmpl/tendenci/media/"
+
+# print("DEBUG: Static File Dirs")
+# print(STATICFILES_DIRS)
+
+# STATICFILES_DIRS = []
+# # Collect static files from builtin themes
+# for theme in os.listdir(BUILTIN_THEMES_DIR):
+#     # Ignore '.' '..' and hidden directories
+#     if theme.startswith('.'):
+#         continue
+#     theme_path = os.path.join(BUILTIN_THEMES_DIR, theme)
+#     if not os.path.isdir(theme_path):
+#         continue
+#     for static_dir in ['media', 'static']:
+#         static_path = os.path.join(theme_path, static_dir)
+#         if os.path.isdir(static_path):
+#             prefix = os.path.join('themes', theme)
+#             STATICFILES_DIRS += [static_path]
+
+# THEMES_DIR = os.path.join(PROJECT_ROOT, 'themes')
 
 
 # ---------------------------------------------------------------------------- #
@@ -301,8 +326,6 @@ STATICFILES_STORAGE = 'tendenci.libs.boto_s3.utils.StaticStorage'
 # To enable custom URL patterns to be configured in urls.py:
 ROOT_URLCONF = 'conf.urls'
 
-print("DEBUG: Static File Dirs")
-print(STATICFILES_DIRS)
 
 # To enable the Tendenci helpdesk app, uncomment this setting, uncomment
 # ROOT_URLCONF above, and uncomment the helpdesk urlpattern in urls.py
