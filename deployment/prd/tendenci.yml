@@ -13,7 +13,22 @@ spec:
       labels: # labels to select/identify the deployment
         app: tendenci
     spec: # pod spec
+      initContainers:
+        - name: tendenci-static-permission-fix
+          image: busybox
+          command: ["/bin/chmod", "-R", "777", "/usr/share/nginx/html"]
+          volumeMounts:
+            - mountPath: "/usr/share/nginx/html"
+              name: tendenci-persistent-volume
       containers:
+        - name: tendenci-static
+          image: benjiboi214/mmpl-tendenci-static:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8001
+          volumeMounts:
+            - mountPath: "/usr/share/nginx/html"
+              name: tendenci-persistent-volume
         - name: tendenci
           image: benjiboi214/mmpl-tendenci:latest # image we pushed
           imagePullPolicy: Always
@@ -112,8 +127,12 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 80
+    - name: app
+      port: 80
       targetPort: 8000
+    - name: static
+      port: 81
+      targetPort: 8001
   selector:
     app: tendenci
 ---
@@ -134,6 +153,13 @@ spec:
     - host: "tendenci.mmpl.prod.jetselliot.com"
       http:
         paths:
+          - path: /static
+            pathType: Prefix
+            backend:
+              service:
+                name: tendenci-service
+                port:
+                  number: 81
           - path: /
             pathType: Prefix
             backend:
