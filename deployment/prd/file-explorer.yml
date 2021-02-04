@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: mmpl-production
+  name: file-explorer-deployment
+spec:
+  selector:
+    matchLabels:
+      app: file-explorer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: file-explorer
+    spec:
+      initContainers:
+        - name: pgsql-data-permission-fix
+          image: busybox
+          command: ["/bin/chmod", "-R", "a+r", "/usr/share/nginx/html"]
+          volumeMounts:
+            - mountPath: "/usr/share/nginx/html"
+              name: tendenci-persistent-volume
+      containers:
+        - name: file-explorer
+          image: benjiboi214/nginx-static:latest # image we pushed
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: "/usr/share/nginx/html"
+              name: tendenci-persistent-volume
+      volumes:
+        - name: tendenci-persistent-volume
+          persistentVolumeClaim:
+            claimName: tendenci-persistent-volume
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: mmpl-production
+  name: file-explorer-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: file-explorer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: mmpl-production
+  name: file-explorer-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: cluster-issuer-prod
+spec:
+  tls:
+    - hosts:
+        - static.prod.jetselliot.com
+      secretName: file-explorer-issuer
+  rules:
+    - host: "static.prod.jetselliot.com"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: file-explorer-service
+                port:
+                  number: 80
