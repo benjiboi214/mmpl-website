@@ -100,6 +100,16 @@ spec:
                 secretKeyRef:
                   name: tendenci-aws-static
                   key: access-secret-key
+            - name: MAILGUN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-mailgun
+                  key: mailgun-user
+            - name: MAILGUN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tendenci-mailgun
+                  key: mailgun-password
             - name: MEMCACHED_HOST
               value: "memcached-service"
             - name: MEMCACHED_PORT
@@ -111,6 +121,12 @@ spec:
               name: tendenci-persistent-volume
             - mountPath: "/home/tendenci/cert"
               name: tendenci-cert
+        - name: tendenci-logs
+          image: busybox
+          args: [/bin/sh, -c, "tail -n+1 -f /var/log/mmpl/app.log"]
+          volumeMounts:
+            - mountPath: "/var/log/mmpl"
+              name: tendenci-persistent-volume
       volumes:
         - name: tendenci-persistent-volume
           persistentVolumeClaim:
