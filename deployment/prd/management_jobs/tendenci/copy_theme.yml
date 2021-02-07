@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: mmpl-production
+  name: tendenci-copy-theme
+spec:
+  backoffLimit: 0
+  completions: 1
+  template:
+    spec:
+      containers:
+        - name: tendenci-copy-theme
+          image: benjiboi214/mmpl-tendenci:latest
+          imagePullPolicy: Always
+          command: ["/bin/bash"]
+          args: ["/runtime/copy_theme.sh"]
+          volumeMounts:
+            - mountPath: "/home/tendenci/install"
+              name: tendenci-persistent-volume
+      restartPolicy: Never
+      volumes:
+        - name: tendenci-persistent-volume
+          persistentVolumeClaim:
+            claimName: tendenci-persistent-volume

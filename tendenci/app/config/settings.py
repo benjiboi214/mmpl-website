@@ -22,7 +22,7 @@ from tendenci.settings import *
 # To enable verbose error pages, debug logging, and other features that are
 # useful for development/testing but should not be enabled on live sites,
 # uncomment this setting.
-#DEBUG = True
+DEBUG = False
 
 if DEBUG:
     disable_template_cache()
@@ -47,8 +47,8 @@ if DEBUG:
 # at https://www.grc.com/passwords.htm (Use the
 # "63 random alpha-numeric characters" string, and refresh the page to get an
 # additional string.)
-SECRET_KEY=os.getenv('DJANGO_SECRET_KEY')
-SITE_SETTINGS_KEY=os.getenv('DJANGO_SITE_SETTINGS_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+SITE_SETTINGS_KEY = os.getenv('DJANGO_SITE_SETTINGS_KEY')
 
 # This must be set to a list of fully qualified domain names that are valid for
 # this site.  Connections which request any other name will be rejected.
@@ -60,9 +60,11 @@ ALLOWED_HOSTS = ['tendenci.mmpl.prod.jetselliot.com']
 if DEBUG:
     ALLOWED_HOSTS += ['localhost', '127.0.0.1', '[::1]']
 
+CACHES['default']['BACKEND'] = 'django.core.cache.backends.dummy.DummyCache'
+
 CACHES['default']['BACKEND'] = 'django.core.cache.backends.memcached.PyLibMCCache'
 CACHES['default']['LOCATION'] = f"{os.getenv('MEMCACHED_HOST')}:{os.getenv('MEMCACHED_PORT')}"
-CACHES['default']['TIMEOUT'] = 60*60*24*30
+CACHES['default']['TIMEOUT'] = 60*60
 
 # Tendenci uses the following PostgreSQL database connection settings by
 # default.  Uncomment and configure settings here to override the defaults.
@@ -132,8 +134,8 @@ CSRF_COOKIE_SECURE = True  # Send CSRF Cookie over HTTPS only
 
 # If EMail is enabled below, these must be uncommented and set to an appropriate
 # "From" address.
-#DEFAULT_FROM_EMAIL = 'no-reply@example.com'
-#SERVER_EMAIL = DEFAULT_FROM_EMAIL
+DEFAULT_FROM_EMAIL = 'webmaster@mmpl.prod.jetselliot.com'
+SERVER_EMAIL = 'errors@mmpl.prod.jetselliot.com'
 
 # If EMail is enabled, optionally uncomment and configure this to send an alert
 # email to the specified addresses any time Python, Django, or Tendenci
@@ -141,15 +143,15 @@ CSRF_COOKIE_SECURE = True  # Send CSRF Cookie over HTTPS only
 # notifications.
 #ADMINS = [('John', 'john@example.com'), ('Mary', 'mary@example.com')]
 # To disable error emails and send only non-error Tendenci email notifications:
-#disable_admin_emails()
+# disable_admin_emails()
 
 # To send EMail via an SMTP server:
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_USE_TLS = False
-#EMAIL_HOST = 'localhost'
-#EMAIL_PORT = 25
-#EMAIL_HOST_USER = ''
-#EMAIL_HOST_PASSWORD = ''
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.getenv('MAILGUN_USERNAME')
+EMAIL_HOST_PASSWORD = os.getenv('MAILGUN_PASSWORD')
 
 # To send EMail via Amazon SES:
 #EMAIL_BACKEND = "django_ses.SESBackend"
@@ -244,18 +246,61 @@ CSRF_COOKIE_SECURE = True  # Send CSRF Cookie over HTTPS only
 # Amazon S3 Storage Settings
 # ---------------------------------------------------------------------------- #
 
-AWS_LOCATION = 'mmpl/tendenci/'    # This is usually your site name
-AWS_ACCESS_KEY_ID = os.getenv('AWS_STATIC_ACCESS_KEY_ID') #  'WKEHAJNHYZUBPVQXDKYY'
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_STATIC_SECRET_ACCESS_KEY') # 'aGbN3wc7EhbeLAhgn5F/QEo5WZeNuV08kmc8AwmWDcA'
-AWS_STORAGE_BUCKET_NAME = 'prod.static'
-AWS_S3_ENDPOINT_URL = 'https://sfo3.digitaloceanspaces.com'
-USE_S3_STORAGE = all([
-   AWS_LOCATION,
-   AWS_ACCESS_KEY_ID,
-   AWS_SECRET_ACCESS_KEY,
-   AWS_STORAGE_BUCKET_NAME,
-   AWS_S3_ENDPOINT_URL
-])
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+
+# Access Settings
+# AWS_ACCESS_KEY_ID = os.getenv('AWS_STATIC_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = os.getenv('AWS_STATIC_SECRET_ACCESS_KEY')
+
+# Connection Settings
+# AWS_S3_CUSTOM_DOMAIN = 'prod.static.jetselliot.com'
+# AWS_STORAGE_BUCKET_NAME = 'prod.static'
+# AWS_DEFAULT_ACL = 'public-read'
+
+# Duped due to tendenci config (?)
+# AWS_S3_ENDPOINT_URL = 'https://sfo3.digitaloceanspaces.com'  # django-storages
+# Tendenci
+# Used in theme app for warning about deprecation (???)
+# Used to construct a static URL if USE_S3_STORAGE is enabled
+# S3_ROOT_URL = 'https://sfo3.digitaloceanspaces.com'  # Changed Thu Afternoon
+
+# Where to upload in the bucket
+# AWS_LOCATION = 'mmpl/tendenci/'
+# STATIC_S3_PATH = 'mmpl/tendenci/static/'
+# DEFAULT_S3_PATH = 'mmpl/tendenci/media/'
+
+# Tendenci uses this for:
+# Determining URL rewrites for redirect because they weren't setting STATIC_URL (?)
+# Fuck me this code base is a mess
+# USE_S3_STORAGE = False  # Changed Thu Afternoon
+
+# Django Storages Config
+# DEFAULT_FILE_STORAGE = 'tendenci.libs.boto_s3.utils.DefaultStorage'
+# STATICFILES_STORAGE = 'tendenci.libs.boto_s3.utils.StaticStorage'
+
+# STATIC_URL = "https://prod.static.jetselliot.com/mmpl/tendenci/static/"
+# MEDIA_URL = "https://prod.static.jetselliot.com/mmpl/tendenci/media/"
+
+# print("DEBUG: Static File Dirs")
+# print(STATICFILES_DIRS)
+
+# STATICFILES_DIRS = []
+# # Collect static files from builtin themes
+# for theme in os.listdir(BUILTIN_THEMES_DIR):
+#     # Ignore '.' '..' and hidden directories
+#     if theme.startswith('.'):
+#         continue
+#     theme_path = os.path.join(BUILTIN_THEMES_DIR, theme)
+#     if not os.path.isdir(theme_path):
+#         continue
+#     for static_dir in ['media', 'static']:
+#         static_path = os.path.join(theme_path, static_dir)
+#         if os.path.isdir(static_path):
+#             prefix = os.path.join('themes', theme)
+#             STATICFILES_DIRS += [static_path]
+
+# THEMES_DIR = os.path.join(PROJECT_ROOT, 'themes')
 
 
 # ---------------------------------------------------------------------------- #
@@ -274,14 +319,15 @@ USE_S3_STORAGE = all([
 #INSTALLED_APPS += ['example_app']
 
 # To remove a default app from INSTALLED_APPS:
-#INSTALLED_APPS.remove('some_app')
+# INSTALLED_APPS.remove('some_app')
 # Or:
 #remove_apps = ['app1', 'app2']
-#for app in remove_apps:
+# for app in remove_apps:
 #    INSTALLED_APPS.remove(app)
 
 # To enable custom URL patterns to be configured in urls.py:
 ROOT_URLCONF = 'conf.urls'
+
 
 # To enable the Tendenci helpdesk app, uncomment this setting, uncomment
 # ROOT_URLCONF above, and uncomment the helpdesk urlpattern in urls.py
@@ -301,25 +347,25 @@ ROOT_URLCONF = 'conf.urls'
 
 # To change the log file names:
 set_app_log_filename('/var/log/mmpl/app.log')
-set_debug_log_filename('/var/log/mmpl/debug.log')
+# set_debug_log_filename('/var/log/mmpl/debug.log')
 
 # To change the log level for the app.log file:
 # (Valid levels are: 'DEBUG' 'INFO' 'WARNING' 'ERROR' 'CRITICAL')
-#set_app_log_level('INFO')
+set_app_log_level('INFO')
 
 # To disable logging:
 # disable_app_log()
-# disable_debug_log()
+disable_debug_log()
 
 # To disable debug.log and write DEBUG messages to app.log when DEBUG is True:
-#disable_debug_log()
+# disable_debug_log()
 #if DEBUG: set_app_log_level('DEBUG')
 
 # To log to the console in addition to the log files (or instead of the log
 # files if they are disabled above):
-enable_console_log()
+# enable_console_log()
 # To change the console log level:
-set_console_log_level('DEBUG')
+# set_console_log_level('DEBUG')
 
 # For more advanced configuration, you can modify the default LOGGING data
 # structure, which is configured in
@@ -345,15 +391,15 @@ RAVEN_CONFIG = {'dsn': SENTRY_DSN}
 # Note that if you are running NGINX, all clients appear to be connecting from
 # 127.0.0.1, so this example configuration will give all clients access to these
 # debugging capabilities.
-#if DEBUG:
-#    INTERNAL_IPS = ['127.0.0.1', '::1']
+if DEBUG:
+    INTERNAL_IPS = ['*']
 
 # Uncomment this setting to enable the Django Debug Toolbar for profiling
 # (measuring CPU/SQL/cache/etc timing).  Only clients matching INTERNAL_IPS
 # above will be able to use the toolbar.
 # This toolbar may expose internal/private data, and it will slow down your site
 # significantly, so use this with caution.
-#DEBUG_TOOLBAR_ENABLED = True
+DEBUG_TOOLBAR_ENABLED = True
 
 
 # ---------------------------------------------------------------------------- #
