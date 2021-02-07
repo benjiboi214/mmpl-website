@@ -347,7 +347,7 @@ ROOT_URLCONF = 'conf.urls'
 
 # To change the log file names:
 set_app_log_filename('/var/log/mmpl/app.log')
-# set_debug_log_filename('/var/log/mmpl/debug.log')
+set_debug_log_filename('/var/log/mmpl/debug.log')
 
 # To change the log level for the app.log file:
 # (Valid levels are: 'DEBUG' 'INFO' 'WARNING' 'ERROR' 'CRITICAL')
