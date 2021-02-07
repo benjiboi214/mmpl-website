@@ -13,5 +13,5 @@ if [ ! -f "$TENDENCI_PROJECT_ROOT/conf/first_run" ]; then
 fi
 
 if [ -f "$TENDENCI_PROJECT_ROOT/conf/first_run" ]; then
-  run "$@"
+  run_wsgi "$@"
 fi
