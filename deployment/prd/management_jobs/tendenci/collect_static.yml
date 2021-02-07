@@ -4,6 +4,9 @@ metadata:
   namespace: mmpl-production
   name: tendenci-collect-static
 spec:
+  parallelism: 1
+  backoffLimit: 0
+  completions: 1
   template:
     spec:
       containers:
@@ -87,6 +90,7 @@ spec:
               name: tendenci-persistent-volume
             - mountPath: "/home/tendenci/cert"
               name: tendenci-cert
+      restartPolicy: Never
       volumes:
         - name: tendenci-persistent-volume
           persistentVolumeClaim:
