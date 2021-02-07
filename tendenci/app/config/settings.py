@@ -141,7 +141,7 @@ SERVER_EMAIL = 'errors@mmpl.prod.jetselliot.com'
 # email to the specified addresses any time Python, Django, or Tendenci
 # encounter an error.  This also enables some other non-error Tendenci email
 # notifications.
-#ADMINS = [('John', 'john@example.com'), ('Mary', 'mary@example.com')]
+ADMINS = [('Ben', 'benjiboi214@gmail.com')]
 # To disable error emails and send only non-error Tendenci email notifications:
 # disable_admin_emails()
 
