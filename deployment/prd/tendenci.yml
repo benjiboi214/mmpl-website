@@ -14,6 +14,14 @@ spec:
         app: tendenci
     spec: # pod spec
       initContainers:
+        - name: tendenci-copy-config
+          image: benjiboi214/mmpl-tendenci:latest
+          imagePullPolicy: Always
+          command: ["/bin/bash"]
+          args: ["/runtime/copy_config.sh"]
+          volumeMounts:
+            - mountPath: "/home/tendenci/install"
+              name: tendenci-persistent-volume
         - name: tendenci-static-permission-fix
           image: busybox
           command: ["/bin/chmod", "-R", "777", "/usr/share/nginx/html"]
@@ -28,6 +36,12 @@ spec:
             - containerPort: 8001
           volumeMounts:
             - mountPath: "/usr/share/nginx/html"
+              name: tendenci-persistent-volume
+        - name: tendenci-logs
+          image: busybox
+          args: [/bin/sh, -c, "tail -n+1 -f /var/log/mmpl/app.log"]
+          volumeMounts:
+            - mountPath: "/var/log/mmpl"
               name: tendenci-persistent-volume
         - name: tendenci
           image: benjiboi214/mmpl-tendenci:latest # image we pushed
@@ -121,12 +135,6 @@ spec:
               name: tendenci-persistent-volume
             - mountPath: "/home/tendenci/cert"
               name: tendenci-cert
-        - name: tendenci-logs
-          image: busybox
-          args: [/bin/sh, -c, "tail -n+1 -f /var/log/mmpl/app.log"]
-          volumeMounts:
-            - mountPath: "/var/log/mmpl"
-              name: tendenci-persistent-volume
       volumes:
         - name: tendenci-persistent-volume
           persistentVolumeClaim:
