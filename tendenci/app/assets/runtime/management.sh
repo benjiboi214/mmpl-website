@@ -180,5 +180,5 @@ function run()
 function run_wsgi()
 {
     cd "$TENDENCI_PROJECT_ROOT" \
-    && "$GUNICORN" --bind :8000 --workers 3 conf.wsgi
+    && "$GUNICORN" --bind :8000 --access-logfile - --error-logfile - --workers 3 conf.wsgi
 }
