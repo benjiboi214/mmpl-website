@@ -1,6 +1,7 @@
 # Environment
 PIP=$(which pip3)
 PYTHON=$(which python3)
+GUNICORN=$(which gunicorn)
 
 # Check directories and create them if necessary
 function check_dirs()
@@ -174,4 +175,10 @@ function run()
 {
     cd "$TENDENCI_PROJECT_ROOT" \
     && "$PYTHON" manage.py runserver 0.0.0.0:8000
+}
+
+function run_wsgi()
+{
+    cd "$TENDENCI_PROJECT_ROOT" \
+    && "$GUNICORN" --bind :8000 --workers 3 ./conf/wsgi.py
 }
