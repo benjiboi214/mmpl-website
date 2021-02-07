@@ -22,7 +22,7 @@ from tendenci.settings import *
 # To enable verbose error pages, debug logging, and other features that are
 # useful for development/testing but should not be enabled on live sites,
 # uncomment this setting.
-DEBUG = True
+DEBUG = False
 
 if DEBUG:
     disable_template_cache()
@@ -62,9 +62,9 @@ if DEBUG:
 
 CACHES['default']['BACKEND'] = 'django.core.cache.backends.dummy.DummyCache'
 
-# CACHES['default']['BACKEND'] = 'django.core.cache.backends.memcached.PyLibMCCache'
-# CACHES['default']['LOCATION'] = f"{os.getenv('MEMCACHED_HOST')}:{os.getenv('MEMCACHED_PORT')}"
-# CACHES['default']['TIMEOUT'] = 60*60*24*30
+CACHES['default']['BACKEND'] = 'django.core.cache.backends.memcached.PyLibMCCache'
+CACHES['default']['LOCATION'] = f"{os.getenv('MEMCACHED_HOST')}:{os.getenv('MEMCACHED_PORT')}"
+CACHES['default']['TIMEOUT'] = 60*60
 
 # Tendenci uses the following PostgreSQL database connection settings by
 # default.  Uncomment and configure settings here to override the defaults.
@@ -134,8 +134,8 @@ CSRF_COOKIE_SECURE = True  # Send CSRF Cookie over HTTPS only
 
 # If EMail is enabled below, these must be uncommented and set to an appropriate
 # "From" address.
-#DEFAULT_FROM_EMAIL = 'no-reply@example.com'
-#SERVER_EMAIL = DEFAULT_FROM_EMAIL
+DEFAULT_FROM_EMAIL = 'webmaster@mmpl.prod.jetselliot.com'
+SERVER_EMAIL = 'errors@mmpl.prod.jetselliot.com'
 
 # If EMail is enabled, optionally uncomment and configure this to send an alert
 # email to the specified addresses any time Python, Django, or Tendenci
@@ -146,12 +146,12 @@ CSRF_COOKIE_SECURE = True  # Send CSRF Cookie over HTTPS only
 # disable_admin_emails()
 
 # To send EMail via an SMTP server:
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_USE_TLS = False
-#EMAIL_HOST = 'localhost'
-#EMAIL_PORT = 25
-#EMAIL_HOST_USER = ''
-#EMAIL_HOST_PASSWORD = ''
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.getenv('MAILGUN_USERNAME')
+EMAIL_HOST_PASSWORD = os.getenv('MAILGUN_PASSWORD')
 
 # To send EMail via Amazon SES:
 #EMAIL_BACKEND = "django_ses.SESBackend"
@@ -347,15 +347,15 @@ ROOT_URLCONF = 'conf.urls'
 
 # To change the log file names:
 set_app_log_filename('/var/log/mmpl/app.log')
-set_debug_log_filename('/var/log/mmpl/debug.log')
+# set_debug_log_filename('/var/log/mmpl/debug.log')
 
 # To change the log level for the app.log file:
 # (Valid levels are: 'DEBUG' 'INFO' 'WARNING' 'ERROR' 'CRITICAL')
-# set_app_log_level('INFO')
+set_app_log_level('INFO')
 
 # To disable logging:
 # disable_app_log()
-# disable_debug_log()
+disable_debug_log()
 
 # To disable debug.log and write DEBUG messages to app.log when DEBUG is True:
 # disable_debug_log()
@@ -363,9 +363,9 @@ set_debug_log_filename('/var/log/mmpl/debug.log')
 
 # To log to the console in addition to the log files (or instead of the log
 # files if they are disabled above):
-enable_console_log()
+# enable_console_log()
 # To change the console log level:
-set_console_log_level('DEBUG')
+# set_console_log_level('DEBUG')
 
 # For more advanced configuration, you can modify the default LOGGING data
 # structure, which is configured in
@@ -392,7 +392,7 @@ RAVEN_CONFIG = {'dsn': SENTRY_DSN}
 # 127.0.0.1, so this example configuration will give all clients access to these
 # debugging capabilities.
 if DEBUG:
-    INTERNAL_IPS = ['127.0.0.1', '::1', '119.18.26.20', '*']
+    INTERNAL_IPS = ['*']
 
 # Uncomment this setting to enable the Django Debug Toolbar for profiling
 # (measuring CPU/SQL/cache/etc timing).  Only clients matching INTERNAL_IPS
